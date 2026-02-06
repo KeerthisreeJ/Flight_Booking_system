@@ -1,83 +1,121 @@
-# ✈️ Flight Management System - Secure Booking Platform
+# ✈️ Flight Management System
 
-A comprehensive flight booking system implementing **5 core security components** for the FOCYS evaluation: Authentication, Authorization, Encryption, Hashing & Digital Signatures, and Encoding Techniques.
+A comprehensive and secure flight booking platform built with modern web technologies and enterprise-grade security features. This system provides a complete solution for flight search, booking, payment processing, and ticket management with robust security implementations.
 
-![Security Score](https://img.shields.io/badge/Security-15%2F15%20Marks-success)
 ![Tech Stack](https://img.shields.io/badge/Stack-MERN-blue)
+![Security](https://img.shields.io/badge/Security-Enterprise%20Grade-success)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
 ---
 
-## 🔐 Security Features (15/15 Marks)
+## 🌟 Key Features
 
-### 1. Authentication (3m) ✅
-- **Single-Factor (1.5m):** Email/password login with strong validation
-- **Multi-Factor (1.5m):** OTP via email (6-digit, 10-min expiry)
-- Account lockout after 5 failed attempts (2-hour lock)
-- Password requirements: 8+ chars, uppercase, lowercase, number
+### For Passengers
+- **Flight Search & Booking**: Search flights by route, date, and preferences
+- **Secure Payment Processing**: Encrypted payment data with AES-256 encryption
+- **Digital Boarding Passes**: QR code-based tickets with digital signatures
+- **Booking Management**: View, verify, and manage all your bookings
+- **Email Notifications**: Automated booking confirmations and updates
 
-### 2. Authorization - Access Control (3m) ✅
-- **Access Control Matrix (1.5m):** 3 roles (Guest, User, Admin) × 3 objects (Flights, Bookings, User Data)
-- **Policy Documentation (1.5m):** Detailed justifications in `backend/docs/access_control_policy.md`
-- **Programmatic Enforcement (1.5m):** RBAC middleware on all routes
+### For Crew Members
+- **Flight Assignments**: View assigned flights and schedules
+- **Passenger Manifests**: Access passenger lists for assigned flights
+- **Profile Management**: Update crew information and credentials
 
-### 3. Encryption (3m) ✅
-- **Key Exchange (1.5m):** RSA-2048 key pair generation
-- **Encryption/Decryption (1.5m):** 
-  - AES-256-CBC for payment data
-  - RSA-2048 for key exchange
-  - Hybrid approach for optimal security
-
-### 4. Hashing & Digital Signatures (3m) ✅
-- **Hashing with Salt (1.5m):** bcrypt (10 rounds) for passwords, SHA-256 for OTPs
-- **Digital Signatures (1.5m):** RSA-SHA256 for booking integrity verification
-
-### 5. Encoding Techniques (3m) ✅
-- **Implementation (1m):** Base64 encoding, QR codes for boarding passes
-- **Security Theory (1m):** Documented in `backend/docs/security_theory.md`
-- **Attack Vectors (1m):** 10+ attack types with mitigations documented
+### For Administrators
+- **Flight Management**: Create, update, and manage flight schedules
+- **User Management**: Manage user accounts and roles
+- **Booking Oversight**: Monitor all bookings and transactions
+- **System Analytics**: View statistics and system health
 
 ---
 
-## 🏗️ Architecture
+## 🔐 Security Features
+
+### 1. **Multi-Factor Authentication (2FA)**
+- Email/password login with strong validation
+- OTP verification via email (6-digit code, 10-minute expiry)
+- Account lockout after 5 failed login attempts (2-hour lock)
+- Password requirements: minimum 8 characters, uppercase, lowercase, and numbers
+
+### 2. **Role-Based Access Control (RBAC)**
+- **Guest**: Browse flights (read-only access)
+- **User**: Book flights, manage own bookings and profile
+- **Crew**: View assigned flights and passenger manifests
+- **Admin**: Full system access and management capabilities
+
+### 3. **Data Encryption**
+- **AES-256-CBC**: Encrypts sensitive payment information
+- **RSA-2048**: Secure key exchange and digital signatures
+- **Hybrid Encryption**: Combines symmetric and asymmetric encryption for optimal security
+- All sensitive data encrypted at rest in the database
+
+### 4. **Password Security**
+- **bcrypt Hashing**: Industry-standard password hashing with 10 rounds
+- **Unique Salts**: Each password has a unique salt
+- **SHA-256**: Used for OTP hashing
+- Passwords never stored in plaintext
+
+### 5. **Digital Signatures**
+- **RSA-SHA256**: Every booking is digitally signed
+- **Integrity Verification**: Verify booking authenticity and detect tampering
+- **Non-repudiation**: Cryptographic proof of booking creation
+
+### 6. **Secure Session Management**
+- **JWT Tokens**: Stateless authentication with 7-day expiry
+- **HTTPOnly Cookies**: Protection against XSS attacks
+- **HTTPS Only**: All data transmitted over secure connections
+
+### 7. **Additional Security Measures**
+- **Rate Limiting**: Prevents brute-force attacks (100 requests per 15 minutes)
+- **Helmet.js**: Security headers protection
+- **CORS Configuration**: Controlled cross-origin access
+- **Input Validation**: Sanitization of all user inputs
+- **QR Code Encoding**: Base64-encoded boarding passes
+
+---
+
+## 🏗️ System Architecture
 
 ```
 ┌─────────────────────────────────────────────────────┐
-│                   FRONTEND (HTML/CSS/JS)            │
-│  - Login/Register with 2FA                          │
-│  - Dashboard with QR codes                          │
-│  - Booking verification                             │
+│              FRONTEND (HTML/CSS/JS)                 │
+│  • Login/Register with 2FA                          │
+│  • Flight Search & Booking                          │
+│  • Dashboard with QR Tickets                        │
+│  • Booking Verification                             │
 └─────────────────┬───────────────────────────────────┘
                   │ HTTPS/TLS
                   │ JWT Authentication
 ┌─────────────────▼───────────────────────────────────┐
-│              BACKEND (Node.js/Express)              │
+│           BACKEND (Node.js/Express)                 │
 │  ┌─────────────────────────────────────────────┐   │
-│  │  Security Middleware Layer                  │   │
-│  │  - Helmet.js (Security headers)             │   │
-│  │  - Rate limiting (100 req/15min)            │   │
-│  │  - CORS configuration                       │   │
+│  │  Security Middleware                        │   │
+│  │  • Helmet.js (Security headers)             │   │
+│  │  • Rate limiting                            │   │
+│  │  • CORS configuration                       │   │
 │  └─────────────────────────────────────────────┘   │
 │  ┌─────────────────────────────────────────────┐   │
 │  │  Authentication & Authorization             │   │
-│  │  - JWT token validation                     │   │
-│  │  - Role-based access control                │   │
-│  │  - Ownership verification                   │   │
+│  │  • JWT validation                           │   │
+│  │  • Role-based access control                │   │
+│  │  • Ownership verification                   │   │
 │  └─────────────────────────────────────────────┘   │
 │  ┌─────────────────────────────────────────────┐   │
 │  │  Cryptographic Services                     │   │
-│  │  - AES-256 encryption                       │   │
-│  │  - RSA-2048 signatures                      │   │
-│  │  - bcrypt password hashing                  │   │
-│  │  - QR code generation                       │   │
+│  │  • AES-256 encryption                       │   │
+│  │  • RSA-2048 signatures                      │   │
+│  │  • bcrypt password hashing                  │   │
+│  │  • QR code generation                       │   │
 │  └─────────────────────────────────────────────┘   │
 └─────────────────┬───────────────────────────────────┘
                   │
 ┌─────────────────▼───────────────────────────────────┐
-│              DATABASE (MongoDB)                     │
-│  - Encrypted payment data                           │
-│  - Hashed passwords                                 │
-│  - Digital signatures                               │
+│            DATABASE (MongoDB)                       │
+│  • Encrypted payment data                           │
+│  • Hashed passwords                                 │
+│  • Digital signatures                               │
+│  • User profiles and bookings                       │
 └─────────────────────────────────────────────────────┘
 ```
 
@@ -89,76 +127,99 @@ A comprehensive flight booking system implementing **5 core security components*
 Flight_Booking_system/
 ├── backend/
 │   ├── docs/
-│   │   ├── access_control_policy.md    # ACL documentation (1.5m)
-│   │   └── security_theory.md          # Security theory (2m)
+│   │   ├── access_control_policy.md    # Access control documentation
+│   │   └── security_theory.md          # Security implementation theory
 │   ├── middleware/
 │   │   └── auth.js                     # RBAC enforcement
 │   ├── models/
-│   │   ├── User.js                     # Password hashing, OTP
-│   │   └── Booking.js                  # Encryption, signatures
+│   │   ├── User.js                     # User schema with password hashing
+│   │   ├── Booking.js                  # Booking schema with encryption
+│   │   ├── Flight.js                   # Flight schema
+│   │   └── Crew.js                     # Crew member schema
 │   ├── routes/
-│   │   ├── auth.js                     # Login, register, 2FA
-│   │   ├── booking.js                  # QR codes, signatures
-│   │   ├── flight.js                   # Flight search
+│   │   ├── auth.js                     # Authentication endpoints
+│   │   ├── booking.js                  # Booking management
+│   │   ├── flight.js                   # Flight operations
+│   │   ├── crew.js                     # Crew operations
 │   │   └── admin.js                    # Admin panel
 │   ├── utils/
-│   │   ├── encryption.js               # AES, RSA, signatures
-│   │   └── email.js                    # OTP delivery
+│   │   ├── encryption.js               # AES, RSA, digital signatures
+│   │   └── email.js                    # Email service for OTP
 │   ├── keys/
 │   │   ├── private.pem                 # RSA private key
 │   │   └── public.pem                  # RSA public key
-│   └── server.js                       # Express app
+│   ├── server.js                       # Express application
+│   └── package.json                    # Dependencies
 ├── css/
-│   └── index.css                       # Premium design system
+│   ├── index.css                       # Main stylesheet
+│   ├── admin.css                       # Admin panel styles
+│   └── crew.css                        # Crew portal styles
 ├── js/
 │   ├── api.js                          # API client
-│   ├── auth.js                         # Auth logic
-│   └── dashboard.js                    # Dashboard logic
-├── index.html                          # Login/Register
+│   ├── auth.js                         # Authentication logic
+│   ├── dashboard.js                    # Dashboard functionality
+│   ├── admin.js                        # Admin panel logic
+│   ├── crew.js                         # Crew portal logic
+│   └── payment-validation.js           # Payment validation
+├── index.html                          # Login/Register page
 ├── dashboard.html                      # User dashboard
-└── verify.html                         # Signature verification
+├── admin.html                          # Admin panel
+├── crew.html                           # Crew portal
+├── bookings.html                       # Booking history
+├── verify.html                         # Signature verification
+└── README.md                           # This file
 ```
 
 ---
 
-## 🚀 Quick Start
+## 🚀 Getting Started
 
 ### Prerequisites
-- Node.js 16+
-- MongoDB 4.4+
-- Gmail account (for OTP emails)
+- **Node.js** 16 or higher
+- **MongoDB** 4.4 or higher
+- **Gmail account** (for OTP email delivery)
 
 ### Installation
 
-```bash
-# 1. Clone repository
-git clone https://github.com/KeerthisreeJ/Flight_Booking_system.git
-cd Flight_Booking_system
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/KeerthisreeJ/Flight_Booking_system.git
+   cd Flight_Booking_system
+   ```
 
-# 2. Install backend dependencies
-cd backend
-npm install
+2. **Install backend dependencies**
+   ```bash
+   cd backend
+   npm install
+   ```
 
-# 3. Configure environment variables
-# Create .env file with:
-PORT=5000
-MONGODB_URI=mongodb://localhost:27017/flight_booking
-JWT_SECRET=your_super_secret_jwt_key_here
-JWT_EXPIRE=7d
-ENCRYPTION_KEY=your_32_byte_hex_encryption_key
-ENCRYPTION_IV=your_16_byte_hex_iv
-EMAIL_USER=your_gmail@gmail.com
-EMAIL_PASS=your_app_specific_password
+3. **Configure environment variables**
+   
+   Create a `.env` file in the `backend` directory:
+   ```env
+   PORT=5000
+   MONGODB_URI=mongodb://localhost:27017/flight_booking
+   JWT_SECRET=your_super_secret_jwt_key_here
+   JWT_EXPIRE=7d
+   ENCRYPTION_KEY=your_32_byte_hex_encryption_key
+   ENCRYPTION_IV=your_16_byte_hex_iv
+   EMAIL_USER=your_gmail@gmail.com
+   EMAIL_PASS=your_app_specific_password
+   ```
 
-# 4. Start MongoDB
-mongod
+4. **Start MongoDB**
+   ```bash
+   mongod
+   ```
 
-# 5. Start backend server
-npm run dev
+5. **Start the backend server**
+   ```bash
+   npm run dev
+   ```
 
-# 6. Open frontend
-# Open index.html in browser or use Live Server
-```
+6. **Open the frontend**
+   
+   Open `index.html` in your browser or use a live server extension.
 
 ---
 
@@ -180,7 +241,7 @@ Content-Type: application/json
 }
 ```
 
-#### Login (Step 1 - Password)
+#### Login (Step 1)
 ```http
 POST /api/auth/login
 Content-Type: application/json
@@ -193,7 +254,7 @@ Content-Type: application/json
 Response: { "requiresOTP": true, "userId": "..." }
 ```
 
-#### Verify OTP (Step 2 - 2FA)
+#### Verify OTP (Step 2)
 ```http
 POST /api/auth/verify-otp
 Content-Type: application/json
@@ -206,7 +267,19 @@ Content-Type: application/json
 Response: { "token": "jwt_token", "user": {...} }
 ```
 
-### Booking Endpoints (Requires Authentication)
+### Flight Endpoints
+
+#### Search Flights
+```http
+GET /api/flights/search?from=NYC&to=LON&date=2026-03-15
+```
+
+#### Get Flight Details
+```http
+GET /api/flights/:flightId
+```
+
+### Booking Endpoints (Authentication Required)
 
 #### Create Booking
 ```http
@@ -228,6 +301,12 @@ Content-Type: application/json
 Response: Includes QR code and digital signature
 ```
 
+#### Get User Bookings
+```http
+GET /api/bookings
+Authorization: Bearer <token>
+```
+
 #### Verify Booking Signature
 ```http
 GET /api/bookings/:bookingId/verify
@@ -242,115 +321,125 @@ GET /api/admin/users              # Get all users
 GET /api/admin/bookings           # Get all bookings
 PUT /api/admin/users/:id/role     # Update user role
 GET /api/admin/stats              # System statistics
+POST /api/admin/flights           # Create new flight
+PUT /api/admin/flights/:id        # Update flight
+DELETE /api/admin/flights/:id     # Delete flight
+```
+
+### Crew Endpoints (Crew Role Required)
+
+```http
+GET /api/crew/profile             # Get crew profile
+GET /api/crew/flights             # Get assigned flights
+GET /api/crew/flights/:id/passengers  # Get passenger manifest
 ```
 
 ---
 
 ## 🔒 Security Implementation Details
 
-### Password Security
-- **Algorithm:** bcrypt with 10 rounds
-- **Salt:** Unique per password
-- **Validation:** Min 8 chars, uppercase, lowercase, number
-- **Storage:** Never stored in plaintext
+### Access Control Matrix
 
-### Session Management
-- **Tokens:** JWT with 7-day expiry
-- **Storage:** HTTPOnly cookies + localStorage
-- **Transmission:** HTTPS only
-- **Validation:** Signature verification on every request
+| Role | Flights | Bookings | User Data | Admin Functions |
+|------|---------|----------|-----------|-----------------|
+| **Guest** | Read | None | None | None |
+| **User** | Read | Create/Read/Cancel (Own) | Read/Update (Own) | None |
+| **Crew** | Read (Assigned) | Read (Assigned Flights) | Read (Own) | None |
+| **Admin** | Full Access | Full Access | Read/Update/Delete (All) | Full Access |
 
-### Data Encryption
+### Encryption Details
+
+**Payment Data Encryption (AES-256-CBC)**
 ```javascript
-// AES-256-CBC for payment data
 const cipher = crypto.createCipheriv('aes-256-cbc', key, iv);
 const encrypted = cipher.update(data, 'utf8', 'hex') + cipher.final('hex');
+```
 
-// RSA-2048 for digital signatures
+**Digital Signature Generation (RSA-SHA256)**
+```javascript
 const signature = crypto.createSign('SHA256')
   .update(bookingData)
   .sign(privateKey, 'base64');
 ```
 
-### Access Control Matrix
-
-| Role | Flights | Bookings | User Data |
-|------|---------|----------|-----------|
-| **Guest** | Read | None | None |
-| **User** | Read | Create/Read/Cancel (Own) | Read/Update (Own) |
-| **Admin** | Full Access | Full Access | Read/Update/Delete (All) |
-
----
-
-## 🧪 Testing
-
-### Backend Tests
-```bash
-cd backend
-npm test
+**Password Hashing (bcrypt)**
+```javascript
+const hashedPassword = await bcrypt.hash(password, 10);
 ```
-
-### Manual Testing Checklist
-- [ ] Register new user with strong password
-- [ ] Login and receive OTP via email
-- [ ] Verify OTP and access dashboard
-- [ ] Create booking and receive QR code
-- [ ] Verify booking signature
-- [ ] Test admin panel (admin role)
-- [ ] Test access control (try accessing admin as user)
-- [ ] Test account lockout (5 failed logins)
-
----
-
-## 📖 Documentation
-
-- **Access Control Policy:** `backend/docs/access_control_policy.md`
-  - 3 subjects (Guest, User, Admin)
-  - 3 objects (Flights, Bookings, User Data)
-  - Permission matrix with justifications
-
-- **Security Theory:** `backend/docs/security_theory.md`
-  - Encoding vs Hashing vs Encryption
-  - 10+ attack vectors with mitigations
-  - Risk analysis and security levels
 
 ---
 
 ## 🎨 Frontend Features
 
-- **Premium Design:** Modern gradients, glassmorphism, dark mode
-- **Responsive:** Mobile, tablet, desktop optimized
-- **Animations:** Smooth transitions and micro-interactions
-- **Accessibility:** Semantic HTML, ARIA labels, keyboard navigation
+- **Modern Design**: Premium gradients, glassmorphism effects, and dark mode support
+- **Responsive Layout**: Optimized for mobile, tablet, and desktop devices
+- **Smooth Animations**: Micro-interactions and transitions for enhanced UX
+- **Accessibility**: Semantic HTML, ARIA labels, and keyboard navigation
+- **Real-time Validation**: Client-side form validation with instant feedback
+
+---
+
+## 🧪 Testing
+
+### Manual Testing Checklist
+
+- ✅ Register new user with strong password
+- ✅ Login and receive OTP via email
+- ✅ Verify OTP and access dashboard
+- ✅ Search for available flights
+- ✅ Create booking and receive QR code
+- ✅ Verify booking signature
+- ✅ View booking history
+- ✅ Test crew portal (crew role)
+- ✅ Test admin panel (admin role)
+- ✅ Test access control (unauthorized access attempts)
+- ✅ Test account lockout (5 failed login attempts)
+
+---
+
+## 📖 Additional Documentation
+
+- **Access Control Policy**: `backend/docs/access_control_policy.md`
+  - Detailed role definitions
+  - Permission matrix with justifications
+  - Security policy explanations
+
+- **Security Theory**: `backend/docs/security_theory.md`
+  - Encryption vs Hashing vs Encoding
+  - Attack vectors and mitigations
+  - Risk analysis and security best practices
 
 ---
 
 ## 🛡️ Security Compliance
 
-- ✅ **OWASP Top 10:** Protection against all major vulnerabilities
-- ✅ **NIST SP 800-53:** Access control compliance
-- ✅ **PCI DSS:** Payment data encryption
-- ✅ **GDPR:** Data minimization and access control
+- ✅ **OWASP Top 10**: Protection against major web vulnerabilities
+- ✅ **NIST Guidelines**: Access control and authentication standards
+- ✅ **PCI DSS**: Payment data encryption and security
+- ✅ **GDPR**: Data minimization and user privacy
 
 ---
 
-## 📊 Evaluation Criteria Mapping
+## 🔧 Technologies Used
 
-| Component | Sub-Component | Marks | Status | Location |
-|-----------|---------------|-------|--------|----------|
-| Authentication | Single-Factor | 1.5m | ✅ | `routes/auth.js:75-146` |
-| Authentication | Multi-Factor | 1.5m | ✅ | `routes/auth.js:153-205` |
-| Authorization | ACL Matrix | 1.5m | ✅ | `docs/access_control_policy.md` |
-| Authorization | Policy Docs | 1.5m | ✅ | `docs/access_control_policy.md` |
-| Authorization | Implementation | 1.5m | ✅ | `middleware/auth.js` |
-| Encryption | Key Exchange | 1.5m | ✅ | `utils/encryption.js:52-66` |
-| Encryption | AES/RSA | 1.5m | ✅ | `utils/encryption.js:19-46` |
-| Hashing | With Salt | 1.5m | ✅ | `models/User.js:80-96` |
-| Hashing | Digital Sig | 1.5m | ✅ | `routes/booking.js:107` |
-| Encoding | Implementation | 1m | ✅ | `routes/booking.js:110-129` |
-| Encoding | Theory | 1m | ✅ | `docs/security_theory.md` |
-| Encoding | Attacks | 1m | ✅ | `docs/security_theory.md` |
-| **TOTAL** | | **15m** | ✅ | |
+### Backend
+- **Node.js** - Runtime environment
+- **Express.js** - Web framework
+- **MongoDB** - Database
+- **Mongoose** - ODM for MongoDB
+- **bcrypt** - Password hashing
+- **jsonwebtoken** - JWT authentication
+- **crypto** - Encryption and digital signatures
+- **nodemailer** - Email service
+- **qrcode** - QR code generation
+- **helmet** - Security headers
+- **express-rate-limit** - Rate limiting
+
+### Frontend
+- **HTML5** - Markup
+- **CSS3** - Styling with modern features
+- **JavaScript (ES6+)** - Client-side logic
+- **Fetch API** - HTTP requests
 
 ---
 
@@ -358,23 +447,29 @@ npm test
 
 **Keerthisree J**
 - GitHub: [@KeerthisreeJ](https://github.com/KeerthisreeJ)
-- Email: [Contact via GitHub]
+- Repository: [Flight_Booking_system](https://github.com/KeerthisreeJ/Flight_Booking_system)
 
 ---
 
 ## 📄 License
 
-MIT License - Feel free to use this project for educational purposes.
+MIT License - Feel free to use this project for educational and commercial purposes.
 
 ---
 
 ## 🙏 Acknowledgments
 
-- FOCYS course for security requirements
 - Node.js and Express.js communities
-- MongoDB for database
-- All open-source libraries used
+- MongoDB for the database solution
+- All open-source libraries and contributors
+- Security best practices from OWASP and NIST
 
 ---
 
-**Note:** This is an educational project demonstrating comprehensive security implementations for a flight booking system. All 15 evaluation criteria have been successfully implemented and documented.
+## 📞 Support
+
+For issues, questions, or contributions, please open an issue on the [GitHub repository](https://github.com/KeerthisreeJ/Flight_Booking_system/issues).
+
+---
+
+**Built with ❤️ and 🔐 by Keerthisree J**
