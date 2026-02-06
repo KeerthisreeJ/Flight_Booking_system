@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -74,14 +75,15 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h2>Select your Comfort seats</h2>
         <div class="seat-map">
-            
+
         </div>
         <div class="controls">
-            <button class="btn"><a href="web5.html">Confirm Seats</a></button>
+            <button class="btn" onclick="saveSeats()">Confirm Seats</button>
         </div>
     </div>
 
@@ -100,8 +102,24 @@
             }
         }
 
-        
+
         generateSeatLayout(10, 6);
+
+        function saveSeats() {
+            const selectedSeats = document.querySelectorAll('.seat.selected');
+            const seatCount = selectedSeats.length;
+            const seatPrice = 500; // Assuming 500 per seat
+
+            const seatData = {
+                count: seatCount,
+                cost: seatCount * seatPrice,
+                // store indices or ids if available, here just count is enough for price
+            };
+
+            localStorage.setItem('seatData', JSON.stringify(seatData));
+            window.location.href = 'web5.html';
+        }
     </script>
 </body>
+
 </html>

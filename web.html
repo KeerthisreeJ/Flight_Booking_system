@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,7 +11,6 @@
     <link rel="stylesheet" href="Travelstyle.css">
 
     <style>
-        
         .booking__container {
             border-radius: 2rem;
             border: 1px solid var(--extra-light);
@@ -18,24 +18,32 @@
             max-width: 1250px;
             max-height: 500px;
             margin: auto;
-            background-color: white; 
+            background-color: white;
             padding: 2rem;
+            transition: all 0.3s ease;
         }
-        
+
+        .booking__container:hover {
+            box-shadow: 5px 5px 40px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+        }
+
         .booking__nav {
             display: flex;
             align-items: center;
             margin-bottom: 2rem;
         }
+
         .booking__nav .selected {
             background-color: var(--primary-color);
             color: var(--white);
-            transform: scale(1.7); 
-            transition: transform 0.5s ease-in-out; 
+            transform: scale(1.05);
+            transition: transform 0.3s ease-in-out;
 
         }
+
         main {
-            padding-top: 200px; 
+            padding-top: 200px;
         }
 
 
@@ -49,13 +57,19 @@
             text-align: center;
             border-radius: 5px;
             cursor: pointer;
-            border: 1px solid var(--extra-light); 
+            border: 1px solid var(--extra-light);
+            transition: all 0.3s ease;
+        }
+
+        .booking__nav span:hover {
+            background-color: rgba(99, 102, 241, 0.1);
+            transform: scale(1.02);
         }
 
         .booking__nav span:nth-child(2) {
             color: var(--white);
             background-color: var(--primary-color);
-            border: 1px solid var(--primary-color); 
+            border: 1px solid var(--primary-color);
         }
 
         .booking__container form {
@@ -80,6 +94,11 @@
             color: var(--text-dark);
             background-color: var(--text-light);
             border-radius: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .booking__container .form__group span:hover {
+            background-color: rgba(99, 102, 241, 0.2);
         }
 
         .booking__container .input__group {
@@ -98,46 +117,62 @@
             pointer-events: none;
             transition: 0.3s;
         }
-        .booking__container radio{
-            color:var(--text-dark);
+
+        .booking__container radio {
+            color: var(--text-dark);
             position: relative;
             font-size: 1.5rem;
         }
 
-        .booking__container input {
+        .booking__container input,
+        .booking__container select {
             width: 100%;
             padding: 10px 0;
             font-size: 1.2rem;
-            
+
             outline: none;
             border: none;
-            border-bottom: 1px solid var(--primary-color);
-            color: lightgray;
-            background-color: white; 
+            border-bottom: 2px solid var(--primary-color);
+            color: #333;
+            background-color: white;
+            transition: border-color 0.3s ease;
         }
 
-        .booking__container input:focus ~ label {
+        .booking__container input:focus,
+        .booking__container select:focus {
+            border-bottom-color: #4f46e5;
+        }
+
+        .booking__container input:focus~label {
             font-size: 1rem;
             top: 0;
+            color: #4f46e5;
         }
 
         .booking__container .form__group p {
             margin-top: 0.5rem;
             font-size: 1.0rem;
-            
+
             color: var(--extra-light);
         }
 
         .booking__container .btn {
             padding: 1rem;
             font-size: 1.5rem;
+            transition: all 0.3s ease;
+            border-radius: 8px;
         }
-        
+
+        .booking__container .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
         .booking-option {
             font-size: 1rem;
             color: var(--text-light);
             cursor: pointer;
-            transition: font-size 0.2s, color 0.2s;
+            transition: all 0.3s ease;
         }
 
         .booking-option.selected {
@@ -146,57 +181,91 @@
         }
 
         .booking-option:hover {
-            font-size: 1.3rem;
+            font-size: 1.1rem;
         }
 
         .booking-option:focus {
-            outline: none; 
+            outline: none;
         }
 
+        /* User info badge */
+        .user-badge {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logout-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: #dc2626;
+            transform: scale(1.05);
+        }
     </style>
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-        const bookingOptions = document.querySelectorAll('.booking-option');
+        document.addEventListener("DOMContentLoaded", function () {
+            const bookingOptions = document.querySelectorAll('.booking-option');
 
-       
-    });
+
+        });
 
     </script>
-    
+
 </head>
-<body style="background-image: url(https://www.kayak.com/news/wp-content/uploads/sites/19/2023/07/gettyimages-539327295.jpg); background-size: auto;">
+
+<body
+    style="background-image: url(https://www.kayak.com/news/wp-content/uploads/sites/19/2023/07/gettyimages-539327295.jpg); background-size: cover; background-attachment: fixed;">
     <header>
         <input type="checkbox" name="" id="toggler">
         <label for="toggler" class="fas fa-bars"></label>
 
         <a href="#" class="logo"><span>Flight</span></a>
-        
+
         <nav class="navbar">
             <a href="web.html">Book</a>
             <a href="websh2.html">Schedule</a>
-            
-            
-            <a href="#buses">Home Page</a>
-            
+            <a href="verify.html">Verify Booking</a>
+
         </nav>
         <div class="icons">
-            
-            <a href="web0.html" class="fas fa-user"></a>
-            
+            <span id="userInfo" class="user-badge" style="display: none;">
+                <i class="fas fa-user"></i>
+                <span id="userName"></span>
+            </span>
+            <button id="logoutBtn" class="logout-btn" style="display: none;">Logout</button>
+            <a href="bookings.html" id="bookingsLink" class="fas fa-ticket-alt"
+                style="display: none; margin-right: 20px; font-size: 20px; color: white; text-decoration: none;"
+                title="My Bookings"></a>
+            <a href="web00.html" id="loginLink" class="fas fa-user"></a>
 
         </div>
     </header>
     <main>
-        
+
 
         <section class="section__container booking__container">
             <div class="booking__nav">
-                <span class="booking-option" data-type="oneWay">One-way</span>
-                
+                <span class="booking-option selected" data-type="oneWay">One-way</span>
+
                 <span class="booking-option" data-type="roundWay">Round-way</span>
             </div>
 
-            <form>
+            <form id="searchForm">
                 <div class="form__group">
                     <span><i class="ri-map-pin-line"></i></span>
                     <div class="input__content">
@@ -280,7 +349,7 @@
                                 <option value="VGA">Vijayawada (VGA)</option>
                                 <option value="VTZ">Visakhapatnam (VTZ)</option>
 
-                               
+
                             </select>
                             <label for="fromAirport"></label>
                         </div>
@@ -380,7 +449,7 @@
                     <span><i class="ri-user-3-line"></i></span>
                     <div class="input__content">
                         <div class="input__group">
-                            <input type="number" id="travellers" required>
+                            <input type="number" id="travellers" min="1" max="9" value="1" required>
                             <label for="travellers">Travellers</label>
                         </div>
                         <p>Add Guests</p>
@@ -397,44 +466,91 @@
                     </div>
                 </div>
                 <div class="form__group return-date" style="display: none;">
-                    
+
                     <span><i class="ri-calendar-line"></i></span>
                     <div class="input__content">
                         <div class="input__group">
-                            <input type="date" id="return" required>
+                            <input type="date" id="return">
                             <label for="return">Return</label>
                         </div>
                         <p>Add Date</p>
                     </div>
                 </div>
-                
-                <button class="btn" type="button"><a href="web2.html"><i class="ri-search-line"></i></a></button>
+
+                <button class="btn" type="submit"><i class="ri-search-line"></i></button>
 
             </form>
         </section>
     </main>
     <footer>
         <p>&copy; 2024 Flight Booking. All rights reserved.</p>
-  
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const bookingOptions = document.querySelectorAll('.booking-option');
-            const returnDateField = document.querySelector('.return-date');
 
-            bookingOptions.forEach(option => {
-                option.addEventListener('click', function() {
-                    const tripType = option.getAttribute('data-type');
-                    if (tripType === 'oneWay') {
-                        
-                        returnDateField.style.display = 'none';
-                    } else if (tripType === 'roundWay') {
-                        
-                        returnDateField.style.display = 'flex';
-                    }
+        <script>
+            // Check if user is logged in
+            const token = localStorage.getItem('token');
+            const user = JSON.parse(localStorage.getItem('user') || 'null');
+
+            if (token && user) {
+                document.getElementById('userInfo').style.display = 'inline-flex';
+                document.getElementById('userName').textContent = user.firstName;
+                document.getElementById('logoutBtn').style.display = 'inline-block';
+                document.getElementById('loginLink').style.display = 'none';
+            }
+
+            // Logout function
+            document.getElementById('logoutBtn').addEventListener('click', () => {
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                window.location.reload();
+            });
+
+            // One-way / Round-way toggle
+            document.addEventListener("DOMContentLoaded", function () {
+                const bookingOptions = document.querySelectorAll('.booking-option');
+                const returnDateField = document.querySelector('.return-date');
+
+                bookingOptions.forEach(option => {
+                    option.addEventListener('click', function () {
+                        // Remove selected from all
+                        bookingOptions.forEach(opt => opt.classList.remove('selected'));
+                        // Add selected to clicked
+                        this.classList.add('selected');
+
+                        const tripType = option.getAttribute('data-type');
+                        if (tripType === 'oneWay') {
+                            returnDateField.style.display = 'none';
+                        } else if (tripType === 'roundWay') {
+                            returnDateField.style.display = 'flex';
+                        }
+                    });
                 });
             });
-        });
-        
-    </script>
+
+            // Form submission - store search data and navigate
+            document.getElementById('searchForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+
+                const searchData = {
+                    from: document.getElementById('fromAirport').value,
+                    to: document.getElementById('toAirport').value,
+                    travellers: document.getElementById('travellers').value,
+                    departure: document.getElementById('departure').value,
+                    return: document.getElementById('return').value,
+                    tripType: document.querySelector('.booking-option.selected').getAttribute('data-type')
+                };
+
+                // Store search data
+                localStorage.setItem('searchData', JSON.stringify(searchData));
+
+                // Navigate to results page
+                window.location.href = 'web2.html';
+            });
+
+            // Set minimum date to today
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('departure').setAttribute('min', today);
+            document.getElementById('return').setAttribute('min', today);
+        </script>
 </body>
+
 </html>

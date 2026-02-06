@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Bookings - Flight Booking System</title>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Georgia, serif;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+            min-height: 100vh;
+            padding: 2rem;
+            color: #ffffff;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #a78bfa, #f472b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .back-btn {
+            padding: 0.75rem 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: #ffffff;
+            font-family: Georgia, serif;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .tab {
+            padding: 1rem 2rem;
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.6);
+            font-family: Georgia, serif;
+            font-size: 1rem;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .tab.active {
+            color: #a78bfa;
+            border-bottom-color: #a78bfa;
+        }
+
+        .tab:hover {
+            color: #ffffff;
+        }
+
+        .bookings-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .booking-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .booking-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(167, 139, 250, 0.2);
+            border-color: rgba(167, 139, 250, 0.3);
+        }
+
+        .booking-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .booking-number {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .booking-id {
+            font-weight: bold;
+            color: #a78bfa;
+        }
+
+        .booking-status {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        .status-confirmed {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        .status-pending {
+            background: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+        }
+
+        .status-cancelled {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .flight-info {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 2rem;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .flight-point {
+            text-align: center;
+        }
+
+        .flight-point.from {
+            text-align: left;
+        }
+
+        .flight-point.to {
+            text-align: right;
+        }
+
+        .flight-time {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .flight-city {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .flight-code {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .flight-route {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .route-line {
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(to right, #a78bfa, #f472b6);
+            position: relative;
+        }
+
+        .plane-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.5rem;
+        }
+
+        .flight-duration {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .booking-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .detail-label {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .detail-value {
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
+        .booking-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            font-family: Georgia, serif;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #a78bfa, #f472b6);
+            border: none;
+            color: #ffffff;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(167, 139, 250, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .empty-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .empty-state h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-state p {
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 1.5rem;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-top: 4px solid #a78bfa;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .flight-info {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .flight-point.from,
+            .flight-point.to {
+                text-align: center;
+            }
+
+            .booking-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>My Bookings</h1>
+            <button class="back-btn" onclick="window.location.href='web.html'">
+                <i class="ri-arrow-left-line"></i>
+                Back to Home
+            </button>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" data-tab="all" onclick="switchTab('all')">All Bookings</button>
+            <button class="tab" data-tab="upcoming" onclick="switchTab('upcoming')">Upcoming</button>
+            <button class="tab" data-tab="completed" onclick="switchTab('completed')">Completed</button>
+            <button class="tab" data-tab="cancelled" onclick="switchTab('cancelled')">Cancelled</button>
+        </div>
+
+        <div id="loadingContainer" class="loading">
+            <div class="spinner"></div>
+            <p>Loading your bookings...</p>
+        </div>
+
+        <div id="bookingsContainer" class="bookings-grid" style="display: none;"></div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:5000/api';
+        let allBookings = [];
+        let currentTab = 'all';
+
+        // Check authentication
+        const token = localStorage.getItem('token');
+        const user = JSON.parse(localStorage.getItem('user') || 'null');
+
+        if (!token || !user) {
+            alert('Please login to view your bookings');
+            window.location.href = 'web00.html';
+        }
+
+        // Load bookings on page load
+        loadBookings();
+
+        async function loadBookings() {
+            try {
+                const response = await fetch(`${API_URL}/bookings`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    allBookings = data.bookings || [];
+                    displayBookings(allBookings);
+                } else {
+                    showError('Failed to load bookings');
+                }
+            } catch (error) {
+                console.error('Error loading bookings:', error);
+                showError('Error loading bookings. Please try again.');
+            } finally {
+                document.getElementById('loadingContainer').style.display = 'none';
+                document.getElementById('bookingsContainer').style.display = 'grid';
+            }
+        }
+
+        function switchTab(tab) {
+            currentTab = tab;
+
+            // Update active tab
+            document.querySelectorAll('.tab').forEach(t => {
+                t.classList.remove('active');
+                if (t.dataset.tab === tab) {
+                    t.classList.add('active');
+                }
+            });
+
+            // Filter and display bookings
+            let filtered = allBookings;
+
+            switch (tab) {
+                case 'upcoming':
+                    filtered = allBookings.filter(b => b.bookingStatus === 'confirmed' && new Date(b.departureDate) > new Date());
+                    break;
+                case 'completed':
+                    filtered = allBookings.filter(b => b.bookingStatus === 'confirmed' && new Date(b.departureDate) < new Date());
+                    break;
+                case 'cancelled':
+                    filtered = allBookings.filter(b => b.bookingStatus === 'cancelled');
+                    break;
+            }
+
+            displayBookings(filtered);
+        }
+
+        function displayBookings(bookings) {
+            const container = document.getElementById('bookingsContainer');
+
+            if (bookings.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">✈️</div>
+                        <h3>No bookings found</h3>
+                        <p>You don't have any ${currentTab === 'all' ? '' : currentTab} bookings yet.</p>
+                        <button class="btn-primary" onclick="window.location.href='web.html'" style="border: none; margin-top: 1rem;">
+                            Book a Flight
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = bookings.map(booking => {
+                const departureDate = new Date(booking.departureDate);
+                const isUpcoming = departureDate > new Date();
+
+                return `
+                    <div class="booking-card">
+                        <div class="booking-header">
+                            <div class="booking-number">
+                                Booking ID: <span class="booking-id">${booking.bookingId || booking._id.slice(-8).toUpperCase()}</span>
+                            </div>
+                            <div class="booking-status status-${booking.bookingStatus}">
+                                ${booking.bookingStatus.charAt(0).toUpperCase() + booking.bookingStatus.slice(1)}
+                            </div>
+                        </div>
+
+                        <div class="flight-info">
+                            <div class="flight-point from">
+                                <div class="flight-time">${booking.departureTime || '10:00'}</div>
+                                <div class="flight-city">${booking.from}</div>
+                                <div class="flight-code">${booking.from}</div>
+                            </div>
+
+                            <div class="flight-route">
+                                <div class="route-line">
+                                    <span class="plane-icon">✈️</span>
+                                </div>
+                                <div class="flight-duration">${booking.duration || '2h 30m'}</div>
+                            </div>
+
+                            <div class="flight-point to">
+                                <div class="flight-time">${booking.arrivalTime || '12:30'}</div>
+                                <div class="flight-city">${booking.to}</div>
+                                <div class="flight-code">${booking.to}</div>
+                            </div>
+                        </div>
+
+                        <div class="booking-details">
+                            <div class="detail-item">
+                                <div class="detail-label">Flight Number</div>
+                                <div class="detail-value">${booking.flightNumber || 'N/A'}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Travel Date</div>
+                                <div class="detail-value">${departureDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Passengers</div>
+                                <div class="detail-value">${booking.passengers?.length || booking.numberOfPassengers || 1}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Total Amount</div>
+                                <div class="detail-value">₹${booking.totalPrice?.toLocaleString() || 'N/A'}</div>
+                            </div>
+                        </div>
+
+                        <div class="booking-actions">
+                            <button class="action-btn btn-primary" onclick="viewBookingDetails('${booking._id}')">
+                                <i class="ri-eye-line"></i>
+                                View Details
+                            </button>
+                            ${isUpcoming && booking.bookingStatus === 'confirmed' ? `
+                                <button class="action-btn btn-secondary" onclick="downloadTicket('${booking._id}')">
+                                    <i class="ri-download-line"></i>
+                                    Download Ticket
+                                </button>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function viewBookingDetails(bookingId) {
+            // Navigate to booking details page or show modal
+            alert('Booking details for: ' + bookingId);
+            // TODO: Implement booking details view
+        }
+
+        function downloadTicket(bookingId) {
+            // Download ticket functionality
+            alert('Downloading ticket for booking: ' + bookingId);
+            // TODO: Implement ticket download
+        }
+
+        function showError(message) {
+            const container = document.getElementById('bookingsContainer');
+            container.innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-icon">⚠️</div>
+                    <h3>Error</h3>
+                    <p>${message}</p>
+                    <button class="btn-primary" onclick="loadBookings()" style="border: none; margin-top: 1rem;">
+                        Try Again
+                    </button>
+                </div>
+            `;
+        }
+    </script>
+</body>
+
+</html>

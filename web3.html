@@ -1,20 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Passenger Details</title>
-    
+
     <style>
         body {
             background-color: #f2f2f2;
-            font-family:Georgia, 'Times New Roman', Times, serif;
+            font-family: Georgia, 'Times New Roman', Times, serif;
             margin: 0;
             padding: 0;
         }
 
         header {
-            background-color:  #c3e6c5;
+            background-color: #c3e6c5;
             color: white;
             padding: 10px;
             text-align: center;
@@ -43,7 +44,7 @@
         }
 
         main {
-            margin-top: 80px; 
+            margin-top: 80px;
             padding: 40px;
         }
 
@@ -93,7 +94,7 @@
             display: block;
             width: 100%;
             padding: 10px;
-            background-color:  #c9f6cc;
+            background-color: #c9f6cc;
             color: white;
             border: none;
             border-radius: 5px;
@@ -102,6 +103,7 @@
             text-align: center;
             transition: background-color 0.3s ease;
         }
+
         .ad-container {
             display: flex;
             justify-content: space-between;
@@ -109,7 +111,7 @@
         }
 
         .ad-box {
-            width: calc(33.33% - 10px); 
+            width: calc(33.33% - 10px);
             background-color: #f9f9f9;
             border: 1px solid #ddd;
             border-radius: 5px;
@@ -130,7 +132,7 @@
 
 
         button:hover {
-            background-color:#7bb27d;
+            background-color: #7bb27d;
         }
 
         .bill-details {
@@ -147,18 +149,19 @@
         .bill-details p.total {
             font-weight: bold;
         }
+
         header {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             background-color: rgba(196, 234, 255, 0.8);
-            z-index: 1000; 
-            transition: background-color 0.3s ease; 
+            z-index: 1000;
+            transition: background-color 0.3s ease;
         }
 
         header.nav-scroll {
-            background-color: rgba(188, 230, 254, 0.9); 
+            background-color: rgba(188, 230, 254, 0.9);
         }
 
         header nav {
@@ -181,46 +184,48 @@
         header nav ul li a {
             text-decoration: none;
             color: #333;
-            transition: color 0.3s ease; 
+            transition: color 0.3s ease;
         }
 
         header nav ul li a:hover {
-            color: #555; 
+            color: #555;
         }
-
-
     </style>
 </head>
-<body style="background-image: url(https://static.vecteezy.com/system/resources/previews/003/781/534/non_2x/folding-paper-plane-flying-in-the-sky-with-clouds-seamless-pattern-a-small-white-plane-on-a-white-background-suitable-for-textiles-children-s-clothing-publications-wrapping-paper-free-vector.jpg);">
+
+<body
+    style="background-image: url(https://static.vecteezy.com/system/resources/previews/003/781/534/non_2x/folding-paper-plane-flying-in-the-sky-with-clouds-seamless-pattern-a-small-white-plane-on-a-white-background-suitable-for-textiles-children-s-clothing-publications-wrapping-paper-free-vector.jpg);">
     <header>
         <nav>
             <ul>
                 <li><a href="web.html">Booking</a></li>
                 <li><a href="web4.html">Schedule</a></li>
-                
             </ul>
         </nav>
     </header>
-    
+
     <main>
         <div class="ad-container">
             <div class="ad-box">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/The_Coral_Reef_at_the_Andaman_Islands.jpg" height="300px" width="300px" alt="oceans">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/The_Coral_Reef_at_the_Andaman_Islands.jpg"
+                    height="300px" width="300px" alt="oceans">
                 <p>Visit Andaman </p>
                 <p>What's better than having refreshing Vacation here</p>
             </div>
             <div class="ad-box">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAkevaBTUDaKTfPmJdgFcUHLX4Pd-d4la0hOchaXXe6Q&s" height="300px" width="300px" alt="Ocean">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAkevaBTUDaKTfPmJdgFcUHLX4Pd-d4la0hOchaXXe6Q&s"
+                    height="300px" width="300px" alt="Ocean">
                 <p> Visit Kashmir</p>
-                <p>Kashmir is often called “Paradise on Earth”</p>
+                <p>Kashmir is often called "Paradise on Earth"</p>
             </div>
             <div class="ad-box">
-                <img src="https://img.veenaworld.com/wp-content/uploads/2018/06/1-cover-shutterstock_782705764-Camel-ride-on-the-sand-dunes-of-Thar-desert-Jaisalmer.jpg" height="300px" width="300px" alt="ocean">
+                <img src="https://img.veenaworld.com/wp-content/uploads/2018/06/1-cover-shutterstock_782705764-Camel-ride-on-the-sand-dunes-of-Thar-desert-Jaisalmer.jpg"
+                    height="300px" width="300px" alt="ocean">
                 <p>Thar Desert</p>
                 <p> Thar desert of Rajasthan is known for its undulating dunes</p>
 
             </div>
-            
+
         </div>
         <br>
         <br>
@@ -236,39 +241,49 @@
             </form>
             <div class="bill-details">
                 <h2>Bill Summary</h2>
-                <div id="totalPrice"></div> 
+                <div id="totalPrice"></div>
             </div>
-            <button><a href="web04.html"><h3>Seat Selection</h3></a></button>
-            
+            <button><a href="web04.html">
+                    <h3>Seat Selection</h3>
+                </a></button>
+
         </div>
         <br>
         <br>
-        
+
         <div class="container">
             <h2>Enjoy your travel with some delicous ADD-ONs</h2>
-            <h5 style="color: #747474;"><i>Pre-book your meal from our specially curated menu consisting of Classics, choice of the day, and regional favourites. The revamped in-flight food offering sets a new standard for customer experience that ensures quicker on-board service, greater customer engagement, and reduced food wastage.</i></h5>
-            <button><a href="web4.html"><h4>Order Food</h4></a></button>
+            <h5 style="color: #747474;"><i>Pre-book your meal from our specially curated menu consisting of Classics,
+                    choice of the day, and regional favourites. The revamped in-flight food offering sets a new standard
+                    for customer experience that ensures quicker on-board service, greater customer engagement, and
+                    reduced food wastage.</i></h5>
+            <button onclick="saveAndContinue()">
+                <h4>Order Food</h4>
+            </button>
         </div>
         <br>
         <br><br>
         <br>
         <div class="ad-container">
             <div class="ad-box">
-                <img src="https://static.toiimg.com/thumb/msid-104684413,width-748,height-499,resizemode=4,imgsize-65830/.jpg" height="300px" width="300px" alt="oceans">
+                <img src="https://static.toiimg.com/thumb/msid-104684413,width-748,height-499,resizemode=4,imgsize-65830/.jpg"
+                    height="300px" width="300px" alt="oceans">
                 <p>Darjeeling</p>
                 <p>Perfect Climate to drink the perfect Tea </p>
             </div>
             <div class="ad-box">
-                <img src="https://img.staticmb.com/mbcontent/images/crop/uploads/2024/4/famous-places-in-chennai_0_1200.jpg"height="300px" width="300px" alt="oceans">
+                <img src="https://img.staticmb.com/mbcontent/images/crop/uploads/2024/4/famous-places-in-chennai_0_1200.jpg"
+                    height="300px" width="300px" alt="oceans">
                 <p>Chennai</p>
                 <p>Ancient temples, vibrant arts, natural wonders and a bustling culinary scene make Chennai</p>
             </div>
             <div class="ad-box">
-                <img src="https://images.travelandleisureasia.com/wp-content/uploads/sites/2/2023/10/17134216/sunrise-in-kanyakumari.jpg"height="300px" width="300px" alt="oceans">
+                <img src="https://images.travelandleisureasia.com/wp-content/uploads/sites/2/2023/10/17134216/sunrise-in-kanyakumari.jpg"
+                    height="300px" width="300px" alt="oceans">
                 <p>KanyaKumari</p>
-                <p>'The Land's End'</p>
+                <p> 'The Land's End'</p>
             </div>
-            
+
         </div>
     </main>
 
@@ -277,7 +292,7 @@
         const numTravelersInput = document.getElementById('numTravelers');
         const passengerInputsDiv = document.getElementById('passengerInputs');
         const totalPriceElement = document.getElementById('totalPrice');
-           
+
 
         function createPassengerInputs() {
             const numTravelers = parseInt(numTravelersInput.value);
@@ -300,7 +315,7 @@
         }
 
 
-        
+
         function calculateTotalPrice() {
             const numTravelers = parseInt(numTravelersInput.value);
             let totalPrice = 0;
@@ -308,23 +323,38 @@
             for (let i = 1; i <= numTravelers; i++) {
                 const ageCategory = form.elements[`passengerAgeCategory${i}`].value;
                 if (ageCategory === 'Child') {
-                    totalPrice += 3000; 
+                    totalPrice += 3000;
                 } else if (ageCategory === 'Adult') {
-                    totalPrice += 5600; 
+                    totalPrice += 5600;
                 } else if (ageCategory === 'Elder') {
-                    totalPrice += 3700; 
+                    totalPrice += 3700;
                 }
             }
 
             totalPriceElement.innerHTML = `<p class="total">Total Price: ₹${totalPrice}/-</p>`;
         }
 
-        
+
         numTravelersInput.addEventListener('input', createPassengerInputs);
         form.addEventListener('input', calculateTotalPrice);
 
-        
+
+        function saveAndContinue() {
+            const numTravelers = parseInt(numTravelersInput.value);
+            const passengers = [];
+
+            for (let i = 1; i <= numTravelers; i++) {
+                const name = form.elements[`passengerName${i}`]?.value || '';
+                const ageCategory = form.elements[`passengerAgeCategory${i}`]?.value || 'Adult';
+                passengers.push({ name, ageCategory });
+            }
+
+            localStorage.setItem('passengerData', JSON.stringify(passengers));
+            window.location.href = 'web4.html';
+        }
+
         createPassengerInputs();
     </script>
 </body>
+
 </html>

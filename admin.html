@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Flight Booking</title>
+    <link rel="stylesheet" href="css/admin.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+
+<body>
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="ri-flight-takeoff-line"></i>
+                <span>Flight Admin</span>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="#dashboard" class="nav-item active" data-section="dashboard">
+                <i class="ri-dashboard-line"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="#bookings" class="nav-item" data-section="bookings">
+                <i class="ri-ticket-line"></i>
+                <span>Bookings</span>
+            </a>
+            <a href="#users" class="nav-item" data-section="users">
+                <i class="ri-user-line"></i>
+                <span>Users</span>
+            </a>
+            <a href="#crew" class="nav-item" data-section="crew">
+                <i class="ri-team-line"></i>
+                <span>Crew</span>
+            </a>
+            <a href="#flights" class="nav-item" data-section="flights">
+                <i class="ri-plane-line"></i>
+                <span>Flights</span>
+            </a>
+            <a href="#settings" class="nav-item" data-section="settings">
+                <i class="ri-settings-line"></i>
+                <span>Settings</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <button class="logout-btn" id="adminLogout">
+                <i class="ri-logout-box-line"></i>
+                <span>Logout</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <button class="menu-toggle" id="menuToggle">
+                    <i class="ri-menu-line"></i>
+                </button>
+                <h1 class="page-title">Dashboard</h1>
+            </div>
+            <div class="header-right">
+                <div class="search-box">
+                    <i class="ri-search-line"></i>
+                    <input type="text" placeholder="Search..." id="globalSearch">
+                </div>
+                <div class="admin-profile">
+                    <div class="profile-info">
+                        <span class="admin-name" id="adminName">Admin User</span>
+                        <span class="admin-role">Administrator</span>
+                    </div>
+                    <div class="profile-avatar">
+                        <i class="ri-admin-line"></i>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dashboard Section -->
+        <section class="content-section active" id="dashboard-section">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon users">
+                        <i class="ri-user-line"></i>
+                    </div>
+                    <div class="stat-details">
+                        <h3 id="totalUsers">0</h3>
+                        <p>Total Users</p>
+                    </div>
+                    <div class="stat-trend positive">
+                        <i class="ri-arrow-up-line"></i>
+                        <span>12%</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon bookings">
+                        <i class="ri-ticket-line"></i>
+                    </div>
+                    <div class="stat-details">
+                        <h3 id="totalBookings">0</h3>
+                        <p>Total Bookings</p>
+                    </div>
+                    <div class="stat-trend positive">
+                        <i class="ri-arrow-up-line"></i>
+                        <span>8%</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon revenue">
+                        <i class="ri-money-dollar-circle-line"></i>
+                    </div>
+                    <div class="stat-details">
+                        <h3 id="totalRevenue">₹0</h3>
+                        <p>Total Revenue</p>
+                    </div>
+                    <div class="stat-trend positive">
+                        <i class="ri-arrow-up-line"></i>
+                        <span>15%</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon confirmed">
+                        <i class="ri-checkbox-circle-line"></i>
+                    </div>
+                    <div class="stat-details">
+                        <h3 id="confirmedBookings">0</h3>
+                        <p>Confirmed</p>
+                    </div>
+                    <div class="stat-trend">
+                        <i class="ri-arrow-right-line"></i>
+                        <span>0%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="dashboard-card recent-bookings">
+                    <div class="card-header">
+                        <h2>Recent Bookings</h2>
+                        <button class="view-all-btn">View All</button>
+                    </div>
+                    <div class="card-content">
+                        <div class="table-container">
+                            <table class="data-table" id="recentBookingsTable">
+                                <thead>
+                                    <tr>
+                                        <th>Booking ID</th>
+                                        <th>User</th>
+                                        <th>Route</th>
+                                        <th>Date</th>
+                                        <th>Status</th>
+                                        <th>Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="loading-row">
+                                        <td colspan="6">Loading...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-card activity-feed">
+                    <div class="card-header">
+                        <h2>Recent Activity</h2>
+                    </div>
+                    <div class="card-content">
+                        <div class="activity-list" id="activityList">
+                            <div class="activity-item">
+                                <div class="activity-icon">
+                                    <i class="ri-user-add-line"></i>
+                                </div>
+                                <div class="activity-details">
+                                    <p class="activity-text">New user registered</p>
+                                    <span class="activity-time">2 minutes ago</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bookings Section -->
+        <section class="content-section" id="bookings-section">
+            <div class="section-header">
+                <h2>Manage Bookings</h2>
+                <div class="section-actions">
+                    <div class="filter-group">
+                        <select id="bookingStatusFilter" class="filter-select">
+                            <option value="">All Status</option>
+                            <option value="confirmed">Confirmed</option>
+                            <option value="cancelled">Cancelled</option>
+                            <option value="completed">Completed</option>
+                        </select>
+                    </div>
+                    <button class="refresh-btn" id="refreshBookings">
+                        <i class="ri-refresh-line"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="data-card">
+                <div class="table-container">
+                    <table class="data-table" id="bookingsTable">
+                        <thead>
+                            <tr>
+                                <th>Booking ID</th>
+                                <th>User</th>
+                                <th>Flight</th>
+                                <th>Route</th>
+                                <th>Date</th>
+                                <th>Passengers</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="loading-row">
+                                <td colspan="9">Loading bookings...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Users Section -->
+        <section class="content-section" id="users-section">
+            <div class="section-header">
+                <h2>Manage Users</h2>
+                <div class="section-actions">
+                    <div class="filter-group">
+                        <select id="userRoleFilter" class="filter-select">
+                            <option value="">All Roles</option>
+                            <option value="user">User</option>
+                            <option value="admin">Admin</option>
+                            <option value="guest">Guest</option>
+                        </select>
+                    </div>
+                    <button class="refresh-btn" id="refreshUsers">
+                        <i class="ri-refresh-line"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="data-card">
+                <div class="table-container">
+                    <table class="data-table" id="usersTable">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Role</th>
+                                <th>Joined</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="loading-row">
+                                <td colspan="6">Loading users...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Crew Management Section -->
+        <section class="content-section" id="crew-section">
+            <div class="section-header">
+                <h2>Crew Management</h2>
+                <div class="section-actions">
+                    <div class="filter-group">
+                        <select id="crewRoleFilter" class="filter-select">
+                            <option value="">All Roles</option>
+                            <option value="pilot">Pilot</option>
+                            <option value="co-pilot">Co-Pilot</option>
+                            <option value="cabin-crew">Cabin Crew</option>
+                            <option value="senior-cabin-crew">Senior Cabin Crew</option>
+                        </select>
+                        <select id="crewStatusFilter" class="filter-select">
+                            <option value="">All Status</option>
+                            <option value="active">Active</option>
+                            <option value="on-leave">On Leave</option>
+                            <option value="inactive">Inactive</option>
+                        </select>
+                    </div>
+                    <button class="primary-btn" id="addCrewBtn">
+                        <i class="ri-add-line"></i>
+                        Add Crew Member
+                    </button>
+                </div>
+            </div>
+
+            <div class="data-card">
+                <div class="table-container">
+                    <table class="data-table" id="crewTable">
+                        <thead>
+                            <tr>
+                                <th>Employee ID</th>
+                                <th>Name</th>
+                                <th>Role</th>
+                                <th>License</th>
+                                <th>Experience</th>
+                                <th>Status</th>
+                                <th>Flights</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="loading-row">
+                                <td colspan="8">Loading crew members...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Flights Section -->
+        <section class="content-section" id="flights-section">
+            <div class="section-header">
+                <h2>Flight Management</h2>
+                <div class="section-actions">
+                    <div class="filter-group">
+                        <select id="flightStatusFilter" class="filter-select">
+                            <option value="">All Status</option>
+                            <option value="active">Active</option>
+                            <option value="cancelled">Cancelled</option>
+                            <option value="delayed">Delayed</option>
+                            <option value="completed">Completed</option>
+                        </select>
+                    </div>
+                    <button class="refresh-btn" id="refreshFlights">
+                        <i class="ri-refresh-line"></i>
+                    </button>
+                    <button class="primary-btn" id="addFlightBtn">
+                        <i class="ri-add-line"></i>
+                        Create Flight
+                    </button>
+                </div>
+            </div>
+
+            <div class="data-card">
+                <div class="table-container">
+                    <table class="data-table" id="flightsTable">
+                        <thead>
+                            <tr>
+                                <th>Flight No.</th>
+                                <th>Airline</th>
+                                <th>Route</th>
+                                <th>Times</th>
+                                <th>Aircraft</th>
+                                <th>Crew</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="loading-row">
+                                <td colspan="8">Loading flights...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Settings Section -->
+        <section class="content-section" id="settings-section">
+            <div class="section-header">
+                <h2>Settings</h2>
+            </div>
+
+            <div class="settings-grid">
+                <div class="settings-card">
+                    <h3>System Settings</h3>
+                    <div class="setting-item">
+                        <label>Maintenance Mode</label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="maintenanceMode">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <label>Email Notifications</label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="emailNotifications" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="settings-card">
+                    <h3>Security</h3>
+                    <div class="setting-item">
+                        <label>Two-Factor Authentication</label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="twoFactorAuth">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Edit Booking Modal -->
+    <div class="modal" id="editBookingModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Edit Booking</h2>
+                <button class="close-modal" data-modal="editBookingModal">
+                    <i class="ri-close-line"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editBookingForm">
+                    <input type="hidden" id="editBookingId">
+
+                    <div class="form-group">
+                        <label>Flight Number</label>
+                        <input type="text" id="editFlightNumber" class="form-input" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>From</label>
+                            <input type="text" id="editFrom" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label>To</label>
+                            <input type="text" id="editTo" class="form-input" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Departure Date</label>
+                            <input type="datetime-local" id="editDepartureDate" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Return Date</label>
+                            <input type="datetime-local" id="editReturnDate" class="form-input">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Total Price (₹)</label>
+                            <input type="number" id="editTotalPrice" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Booking Status</label>
+                            <select id="editBookingStatus" class="form-input" required>
+                                <option value="confirmed">Confirmed</option>
+                                <option value="cancelled">Cancelled</option>
+                                <option value="completed">Completed</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Payment Status</label>
+                        <select id="editPaymentStatus" class="form-input" required>
+                            <option value="pending">Pending</option>
+                            <option value="completed">Completed</option>
+                            <option value="failed">Failed</option>
+                            <option value="refunded">Refunded</option>
+                        </select>
+                    </div>
+
+                    <div class="modal-actions">
+                        <button type="button" class="secondary-btn" data-modal="editBookingModal">Cancel</button>
+                        <button type="submit" class="primary-btn">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit User Modal -->
+    <div class="modal" id="editUserModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Edit User</h2>
+                <button class="close-modal" data-modal="editUserModal">
+                    <i class="ri-close-line"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editUserForm">
+                    <input type="hidden" id="editUserId">
+
+                    <div class="form-group">
+                        <label>User Role</label>
+                        <select id="editUserRole" class="form-input" required>
+                            <option value="guest">Guest</option>
+                            <option value="user">User</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
+
+                    <div class="modal-actions">
+                        <button type="button" class="secondary-btn" data-modal="editUserModal">Cancel</button>
+                        <button type="submit" class="primary-btn">Update Role</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Crew Modal -->
+    <div class="modal" id="crewModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="crewModalTitle">Add Crew Member</h2>
+                <button class="close-modal" data-modal="crewModal">
+                    <i class="ri-close-line"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="crewForm">
+                    <input type="hidden" id="crewId">
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>First Name</label>
+                            <input type="text" id="crewFirstName" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Last Name</label>
+                            <input type="text" id="crewLastName" class="form-input" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" id="crewEmail" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Phone</label>
+                            <input type="tel" id="crewPhone" class="form-input" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Role</label>
+                            <select id="crewRole" class="form-input" required>
+                                <option value="">Select Role</option>
+                                <option value="pilot">Pilot</option>
+                                <option value="co-pilot">Co-Pilot</option>
+                                <option value="cabin-crew">Cabin Crew</option>
+                                <option value="senior-cabin-crew">Senior Cabin Crew</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Status</label>
+                            <select id="crewStatus" class="form-input" required>
+                                <option value="active">Active</option>
+                                <option value="on-leave">On Leave</option>
+                                <option value="inactive">Inactive</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group" id="licenseGroup" style="display:none;">
+                            <label>License Number</label>
+                            <input type="text" id="crewLicense" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label>Experience (years)</label>
+                            <input type="number" id="crewExperience" class="form-input" min="0" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Nationality</label>
+                            <input type="text" id="crewNationality" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Date of Birth</label>
+                            <input type="date" id="crewDOB" class="form-input" required>
+                        </div>
+                    </div>
+
+                    <div class="modal-actions">
+                        <button type="button" class="secondary-btn" data-modal="crewModal">Cancel</button>
+                        <button type="submit" class="primary-btn">Save Crew Member</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create/Edit Flight Modal -->
+    <div class="modal" id="flightModal">
+        <div class="modal-content" style="max-width: 800px;">
+            <div class="modal-header">
+                <h2 id="flightModalTitle">Create Flight</h2>
+                <button class="close-modal" data-modal="flightModal">
+                    <i class="ri-close-line"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="flightForm">
+                    <input type="hidden" id="flightId">
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Flight Number</label>
+                            <input type="text" id="flightNumber" class="form-input" placeholder="AI101" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Airline</label>
+                            <input type="text" id="flightAirline" class="form-input" value="Air India" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Aircraft</label>
+                            <input type="text" id="flightAircraft" class="form-input" placeholder="Boeing 737" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>From (Code)</label>
+                            <input type="text" id="flightFromCode" class="form-input" placeholder="DEL" maxlength="3"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <label>From (City)</label>
+                            <input type="text" id="flightFromCity" class="form-input" placeholder="Delhi" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>To (Code)</label>
+                            <input type="text" id="flightToCode" class="form-input" placeholder="BLR" maxlength="3"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <label>To (City)</label>
+                            <input type="text" id="flightToCity" class="form-input" placeholder="Bengaluru" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Departure Time</label>
+                            <input type="time" id="flightDeparture" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Arrival Time</label>
+                            <input type="time" id="flightArrival" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Duration</label>
+                            <input type="text" id="flightDuration" class="form-input" placeholder="2h 30m" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Economy Price (₹)</label>
+                            <input type="number" id="flightPriceEconomy" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Business Price (₹)</label>
+                            <input type="number" id="flightPriceBusiness" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label>First Class Price (₹)</label>
+                            <input type="number" id="flightPriceFirst" class="form-input">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Economy Seats</label>
+                            <input type="number" id="flightCapacityEconomy" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Business Seats</label>
+                            <input type="number" id="flightCapacityBusiness" class="form-input" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label>First Class Seats</label>
+                            <input type="number" id="flightCapacityFirst" class="form-input" value="0">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Status</label>
+                            <select id="flightStatus" class="form-input" required>
+                                <option value="active">Active</option>
+                                <option value="cancelled">Cancelled</option>
+                                <option value="delayed">Delayed</option>
+                                <option value="completed">Completed</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Terminal</label>
+                            <input type="text" id="flightTerminal" class="form-input" placeholder="T3">
+                        </div>
+                        <div class="form-group">
+                            <label>Gate</label>
+                            <input type="text" id="flightGate" class="form-input" placeholder="A12">
+                        </div>
+                    </div>
+
+                    <div class="modal-actions">
+                        <button type="button" class="secondary-btn" data-modal="flightModal">Cancel</button>
+                        <button type="submit" class="primary-btn">Save Flight</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Assign Crew Modal -->
+    <div class="modal" id="assignCrewModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Assign Crew to Flight</h2>
+                <button class="close-modal" data-modal="assignCrewModal">
+                    <i class="ri-close-line"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="assignCrewForm">
+                    <input type="hidden" id="assignFlightId">
+
+                    <div class="form-group">
+                        <label>Flight: <strong id="assignFlightNumber"></strong></label>
+                        <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.5rem;">
+                            <span id="assignFlightRoute"></span>
+                        </p>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Pilot</label>
+                        <select id="assignPilot" class="form-input">
+                            <option value="">Select Pilot</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Co-Pilot</label>
+                        <select id="assignCoPilot" class="form-input">
+                            <option value="">Select Co-Pilot</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Cabin Crew (Hold Ctrl/Cmd to select multiple)</label>
+                        <select id="assignCabinCrew" class="form-input" multiple style="height: 120px;">
+                        </select>
+                    </div>
+
+                    <div class="modal-actions">
+                        <button type="button" class="secondary-btn" data-modal="assignCrewModal">Cancel</button>
+                        <button type="submit" class="primary-btn">Assign Crew</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/admin.js"></script>
+</body>
+
+</html>

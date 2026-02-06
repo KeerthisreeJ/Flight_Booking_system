@@ -1,313 +1,515 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flight Search Results</title>
-    
+    <title>Flight Search Results - Flight Management System</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
+
     <style>
+        :root {
+            --primary: #0f172a;
+            --secondary: #6366f1;
+            --accent: #0cbaba;
+            --accent-dark: #380036;
+            --background: #f8fafc;
+            --surface: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border: #e2e8f0;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --radius-md: 0.5rem;
+            --radius-lg: 1rem;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            background-color: #badded;
-            padding: 20px;
+            background-color: var(--background);
+            color: var(--text-primary);
+            min-height: 100vh;
         }
-        .flight-card {
-            background-color: #f2f3f2;
-            border-radius: 15px;
-            margin-bottom: 20px;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-           
-            max-width: 600px; 
-            max-height: 700px; 
+
+        /* Header */
+        .page-header {
+            background: linear-gradient(135deg, var(--accent-dark) 0%, #2c1e4a 100%);
+            color: white;
+            padding: 2rem 5%;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow-md);
             display: flex;
-            align-items: center;
             justify-content: space-between;
+            align-items: center;
         }
 
-        .flight-details {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
+        .header-content h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            letter-spacing: 1px;
         }
 
-        .flight-time {
-            font-weight: bold;
-        }
-
-        .flight-duration {
-            color: #666;
-            margin-top: 5px;
-        }
-
-        .flight-price {
-            font-size: 24px;
-            font-weight: bold;
-            text-align: center;
-            flex: 1;
-        }
-        .flight-card {
-            position: relative;
-            cursor: pointer;
-        }
-
-        .flight-icon {
+        .header-bg-icon {
+            opacity: 0.1;
+            font-size: 2rem;
             position: absolute;
-            left: 0;
+            right: 2rem;
             top: 50%;
             transform: translateY(-50%);
-            opacity: 0;
-            transition: all 1.5s ease-in-out;
-            z-index: 999;
-            font-size: 45px;
-            
         }
 
+        /* Search Summary Card */
+        .search-summary {
+            background: var(--surface);
+            max-width: 1000px;
+            margin: -30px auto 20px;
+            padding: 1.5rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 101;
+            border: 1px solid var(--border);
+        }
+
+        .route-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .city {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .arrow {
+            color: var(--secondary);
+            font-size: 1.25rem;
+        }
+
+        .meta-info {
+            display: flex;
+            gap: 2rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .modify-btn {
+            background: transparent;
+            border: 2px solid var(--secondary);
+            color: var(--secondary);
+            padding: 0.5rem 1.5rem;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .modify-btn:hover {
+            background: var(--secondary);
+            color: white;
+        }
+
+        /* Flight Results */
+        .results-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 1rem 3rem;
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .results-count {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* Flight Card */
+        .flight-card {
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid var(--border);
+            display: grid;
+            grid-template-columns: 100px 1fr 150px;
+        }
+
+        .flight-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--secondary);
+        }
+
+        .airline-section {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #f8fafc;
+            border-right: 1px solid var(--border);
+        }
+
+        .airline-logo {
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 0.5rem;
+            font-size: 1.5rem;
+            color: var(--secondary);
+        }
+
+        .airline-name {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .flight-info-section {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .time-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .time-group {
+            text-align: center;
+        }
+
+        .time {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .airport-code {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .duration-display {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 150px;
+            position: relative;
+        }
+
+        .duration-text {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.25rem;
+        }
+
+        .flight-path {
+            width: 100%;
+            height: 2px;
+            background: var(--border);
+            position: relative;
+        }
+
+        .flight-path::after {
+            content: "✈";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(90deg);
+            background: var(--surface);
+            padding: 0 5px;
+            color: var(--secondary);
+            font-size: 0.8rem;
+        }
+
+        .stop-info {
+            font-size: 0.8rem;
+            color: var(--accent);
+            margin-top: 0.25rem;
+            font-weight: 500;
+        }
+
+        .price-section {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #f8fafc 0%, #eff6ff 100%);
+            border-left: 1px solid var(--border);
+        }
+
+        .price {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .select-btn {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.2s;
+        }
+
+        .select-btn:hover {
+            background: #4f46e5;
+        }
+
+        @media (max-width: 768px) {
+            .flight-card {
+                grid-template-columns: 1fr;
+            }
+
+            .airline-section,
+            .price-section {
+                border: none;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .price-section {
+                border-top: 1px solid var(--border);
+                border-bottom: none;
+            }
+        }
     </style>
-    
 </head>
+
 <body>
-    <center>
-        
-    <div class="flight-card" onclick="navigateToPassengerDetails(this)">
-        <div class="flight-details">
-            <div class="flight-time">Departure: 10:00</div>
-            <div class="flight-duration">6h 30m</div>
+
+    <!-- Header -->
+    <header class="page-header">
+        <div class="header-content">
+            <h1>Flight Search</h1>
         </div>
-        <div class="flight-price">₹5600/-</div>
-        <div class="flight-details">
-            <div class="flight-time">Arrival: 13:30</div>
+        <div class="user-profile" style="display: flex; align-items: center; gap: 10px;">
+            <div style="text-align: right;">
+                <div style="font-weight: 600; font-size: 0.9rem;">Guest User</div>
+                <div style="font-size: 0.75rem; opacity: 0.8;">Standard Access</div>
+            </div>
+            <div
+                style="width: 40px; height: 40px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                <i class="ri-user-line"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- Search Summary -->
+    <div class="search-summary">
+        <div class="route-info">
+            <span class="city" id="fromCityDisplay">Chennai</span>
+            <span class="arrow">⟶</span>
+            <span class="city" id="toCityDisplay">Coimbatore</span>
+        </div>
+        <div class="meta-info">
+            <div class="meta-item">
+                <i class="ri-calendar-line"></i>
+                <span id="dateDisplay">Oct 24, 2026</span>
+            </div>
+            <div class="meta-item">
+                <i class="ri-user-line"></i>
+                <span id="travellerDisplay">1 Traveller</span>
+            </div>
+            <div class="meta-item">
+                <i class="ri-flight-takeoff-line"></i>
+                <span>Economy</span>
+            </div>
+        </div>
+        <button class="modify-btn" onclick="window.location.href='web.html'">Modify</button>
+    </div>
+
+    <!-- Results -->
+    <div class="results-container">
+        <div class="results-header">
+            <h2 class="results-count">3 Flights Found</h2>
+            <div class="sort-options" style="display: flex; gap: 10px;">
+                <select
+                    style="padding: 8px; border-radius: 6px; border: 1px solid var(--border); background: var(--surface);">
+                    <option>Cheapest First</option>
+                    <option>Fastest First</option>
+                    <option>Earliest Departure</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="flights-list">
+            <!-- Flights will be populated dynamically -->
         </div>
     </div>
-   
-    <div class="flight-card" onclick="navigateToPassengerDetails(this)">
-        <div class="flight-details">
-            <div class="flight-time">Departure: 5:00</div>
-            <div class="flight-duration">5h 30m</div>
-        </div>
-        <div class="flight-price">₹5600/-</div>
-        <div class="flight-details">
-            <div class="flight-time">Arrival: 10:30</div>
-        </div>
-    </div>
-    <div class="flight-card" onclick="navigateToPassengerDetails(this)">
-        <div class="flight-details">
-            <div class="flight-time">Departure: 17:00</div>
-            <div class="flight-duration">7h 30m</div>
-        </div>
-        <div class="flight-price">₹7600/-</div>
-        <div class="flight-details">
-            <div class="flight-time">Arrival: 00:30</div>
-        </div>
-    </div>
-        
-    <div class="flight-card" onclick="navigateToPassengerDetails(this)">
-        <div class="flight-details">
-            <div class="flight-time">Departure: 10:00</div>
-            <div class="flight-duration">6h 30m</div>
-        </div>
-        <div class="flight-price">₹5600/-</div>
-        <div class="flight-details">
-            <div class="flight-time">Arrival: 13:30</div>
-        </div>
-    </div>
-   
-    <div class="flight-card" onclick="navigateToPassengerDetails(this)">
-        <div class="flight-details">
-            <div class="flight-time">Departure: 5:00</div>
-            <div class="flight-duration">5h 30m</div>
-        </div>
-        <div class="flight-price">₹5600/-</div>
-        <div class="flight-details">
-            <div class="flight-time">Arrival: 10:30</div>
-        </div>
-    </div>
-    <div class="flight-card" onclick="navigateToPassengerDetails(this)">
-        <div class="flight-details">
-            <div class="flight-time">Departure: 17:00</div>
-            <div class="flight-duration">7h 30m</div>
-        </div>
-        <div class="flight-price">₹7600/-</div>
-        <div class="flight-details">
-            <div class="flight-time">Arrival: 00:30</div>
-        </div>
-    </div>    
-    <div class="flight-card" onclick="navigateToPassengerDetails(this)">
-        <div class="flight-details">
-            <div class="flight-time">Departure: 10:00</div>
-            <div class="flight-duration">6h 30m</div>
-        </div>
-        <div class="flight-price">₹5600/-</div>
-        <div class="flight-details">
-            <div class="flight-time">Arrival: 13:30</div>
-        </div>
-    </div>
-   
-    <div class="flight-card" onclick="navigateToPassengerDetails(this)">
-        <div class="flight-details">
-            <div class="flight-time">Departure: 5:00</div>
-            <div class="flight-duration">5h 30m</div>
-        </div>
-        <div class="flight-price">₹5600/-</div>
-        <div class="flight-details">
-            <div class="flight-time">Arrival: 10:30</div>
-        </div>
-    </div>
-    <div class="flight-card" onclick="navigateToPassengerDetails(this)">
-        <div class="flight-details">
-            <div class="flight-time">Departure: 17:00</div>
-            <div class="flight-duration">7h 30m</div>
-        </div>
-        <div class="flight-price">₹7600/-</div>
-        <div class="flight-details">
-            <div class="flight-time">Arrival: 00:30</div>
-        </div>
-    </div>    
-    <div class="flight-card" onclick="navigateToPassengerDetails(this)">
-        <div class="flight-details">
-            <div class="flight-time">Departure: 10:00</div>
-            <div class="flight-duration">6h 30m</div>
-        </div>
-        <div class="flight-price">₹5600/-</div>
-        <div class="flight-details">
-            <div class="flight-time">Arrival: 13:30</div>
-        </div>
-    </div>
-   
-    <div class="flight-card" onclick="navigateToPassengerDetails(this)">
-        <div class="flight-details">
-            <div class="flight-time">Departure: 5:00</div>
-            <div class="flight-duration">5h 30m</div>
-        </div>
-        <div class="flight-price">₹5600/-</div>
-        <div class="flight-details">
-            <div class="flight-time">Arrival: 10:30</div>
-        </div>
-    </div>
-    <div class="flight-card" onclick="navigateToPassengerDetails(this)">
-        <div class="flight-details">
-            <div class="flight-time">Departure: 17:00</div>
-            <div class="flight-duration">7h 30m</div>
-        </div>
-        <div class="flight-price">₹7600/-</div>
-        <div class="flight-details">
-            <div class="flight-time">Arrival: 00:30</div>
-        </div>
-    </div>    
-    
-    <div class="flight-card" onclick="navigateToPassengerDetails(this)">
-        <div class="flight-details">
-            <div class="flight-time">Departure: 17:00</div>
-            <div class="flight-duration">7h 30m</div>
-        </div>
-        <div class="flight-price">₹7600/-</div>
-        <div class="flight-details">
-            <div class="flight-time">Arrival: 00:30</div>
-        </div>
-    </div>    
-    <div class="flight-card" onclick="navigateToPassengerDetails(this)">
-        <div class="flight-details">
-            <div class="flight-time">Departure: 10:00</div>
-            <div class="flight-duration">6h 30m</div>
-        </div>
-        <div class="flight-price">₹5600/-</div>
-        <div class="flight-details">
-            <div class="flight-time">Arrival: 13:30</div>
-        </div>
-    </div>
-   
-    <div class="flight-card" onclick="navigateToPassengerDetails(this)">
-        <div class="flight-details">
-            <div class="flight-time">Departure: 5:00</div>
-            <div class="flight-duration">5h 30m</div>
-        </div>
-        <div class="flight-price">₹5600/-</div>
-        <div class="flight-details">
-            <div class="flight-time">Arrival: 10:30</div>
-        </div>
-    </div>
-    <div class="flight-card" onclick="navigateToPassengerDetails(this)">
-        <div class="flight-details">
-            <div class="flight-time">Departure: 17:00</div>
-            <div class="flight-duration">7h 30m</div>
-        </div>
-        <div class="flight-price">₹7600/-</div>
-        <div class="flight-details">
-            <div class="flight-time">Arrival: 00:30</div>
-        </div>
-    </div>    
-    <div class="flight-card" onclick="navigateToPassengerDetails(this)">
-        <div class="flight-details">
-            <div class="flight-time">Departure: 10:00</div>
-            <div class="flight-duration">6h 30m</div>
-        </div>
-        <div class="flight-price">₹5600/-</div>
-        <div class="flight-details">
-            <div class="flight-time">Arrival: 13:30</div>
-        </div>
-    </div>
-   
-    <div class="flight-card" onclick="navigateToPassengerDetails(this)">
-        <div class="flight-details">
-            <div class="flight-time">Departure: 5:00</div>
-            <div class="flight-duration">5h 30m</div>
-        </div>
-        <div class="flight-price">₹5600/-</div>
-        <div class="flight-details">
-            <div class="flight-time">Arrival: 10:30</div>
-        </div>
-    </div>
-    <div class="flight-card" onclick="navigateToPassengerDetails(this)">
-        <div class="flight-details">
-            <div class="flight-time">Departure: 17:00</div>
-            <div class="flight-duration">7h 30m</div>
-        </div>
-        <div class="flight-price">₹7600/-</div>
-        <div class="flight-details">
-            <div class="flight-time">Arrival: 00:30</div>
-        </div>
-    </div>    
-    <div class="flight-card" onclick="navigateToPassengerDetails(this)">
-        <div class="flight-details">
-            <div class="flight-time">Departure: 10:00</div>
-            <div class="flight-duration">6h 30m</div>
-        </div>
-        <div class="flight-price">₹5600/-</div>
-        <div class="flight-details">
-            <div class="flight-time">Arrival: 13:30</div>
-        </div>
-    </div>
-   
-    <div class="flight-card" onclick="navigateToPassengerDetails(this)">
-        <div class="flight-details">
-            <div class="flight-time">Departure: 5:00</div>
-            <div class="flight-duration">5h 30m</div>
-        </div>
-        <div class="flight-price">₹5600/-</div>
-        <div class="flight-details">
-            <div class="flight-time">Arrival: 10:30</div>
-        </div>
-    </div>
-    <div class="flight-card" onclick="navigateToPassengerDetails(this)">
-        <div class="flight-details">
-            <div class="flight-time">Departure: 17:00</div>
-            <div class="flight-duration">7h 30m</div>
-        </div>
-        <div class="flight-price">₹7600/-</div>
-        <div class="flight-details">
-            <div class="flight-time">Arrival: 00:30</div>
-        </div>
-    </div>
-    
-    </center>
+
     <script>
-        
-        function navigateToPassengerDetails(element) {
-            
-            window.location.href = "web3.html";
+        // Use hardcoded values if no search data found
+        const searchData = JSON.parse(localStorage.getItem('searchData') || '{}');
+
+        // Update UI with search criteria
+        if (searchData.from) document.getElementById('fromCityDisplay').textContent = searchData.from;
+        if (searchData.to) document.getElementById('toCityDisplay').textContent = searchData.to;
+        if (searchData.departure) {
+            const date = new Date(searchData.departure);
+            document.getElementById('dateDisplay').textContent = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        }
+        if (searchData.travellers) document.getElementById('travellerDisplay').textContent = searchData.travellers + (searchData.travellers > 1 ? ' Travellers' : ' Traveller');
+
+        // Generate dynamic flights based on search data
+        const flightsListToCheck = document.getElementById('flights-list');
+        if (flightsListToCheck) { // Guard clause to ensure element exists
+            // Mock flight data template
+            const mockFlights = [
+                {
+                    id: 'ST001',
+                    airline: 'Indigo',
+                    flightNo: '6E-7123',
+                    depTime: '06:45',
+                    arrTime: '07:50',
+                    duration: '1h 05m',
+                    price: 3429,
+                    logoColor: '#0f172a'
+                },
+                {
+                    id: 'ST002',
+                    airline: 'Air India',
+                    flightNo: 'AI-554',
+                    depTime: '10:15',
+                    arrTime: '11:25',
+                    duration: '1h 10m',
+                    price: 4150,
+                    logoColor: '#ef4444'
+                },
+                {
+                    id: 'ST003',
+                    airline: 'Vistara',
+                    flightNo: 'UK-832',
+                    depTime: '18:30',
+                    arrTime: '19:45',
+                    duration: '1h 15m',
+                    price: 5200,
+                    logoColor: '#6366f1'
+                }
+            ];
+
+            const fromCode = searchData.from || 'MAA';
+            const toCode = searchData.to || 'CJB';
+
+            let flightsHTML = '';
+
+            mockFlights.forEach(flight => {
+                flightsHTML += `
+                <div class="flight-card">
+                    <div class="airline-section">
+                        <div class="airline-logo" style="color: ${flight.logoColor};"><i class="ri-plane-fill"></i></div>
+                        <span class="airline-name">${flight.airline}</span>
+                        <span style="font-size: 0.7rem; color: #999; margin-top: 2px;">${flight.flightNo}</span>
+                    </div>
+                    <div class="flight-info-section">
+                        <div class="time-row">
+                            <div class="time-group">
+                                <div class="time">${flight.depTime}</div>
+                                <div class="airport-code">${fromCode}</div>
+                            </div>
+                            <div class="duration-display">
+                                <span class="duration-text">${flight.duration}</span>
+                                <div class="flight-path"></div>
+                                <span class="stop-info">Non-stop</span>
+                            </div>
+                            <div class="time-group">
+                                <div class="time">${flight.arrTime}</div>
+                                <div class="airport-code">${toCode}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="price-section">
+                        <div class="price">₹${flight.price.toLocaleString()}</div>
+                        <button class="select-btn"
+                            onclick="selectFlight('${flight.id}', '${flight.flightNo}', ${flight.price}, '${flight.airline}', '${flight.depTime}', '${flight.arrTime}')">Select</button>
+                    </div>
+                </div>
+                `;
+            });
+
+            flightsListToCheck.innerHTML = flightsHTML;
+        }
+
+        function selectFlight(flightId, flightNumber, price, airline, depTime, arrTime) {
+            // Store selected flight data
+            const travellers = parseInt(searchData.travellers || 1);
+            // Default times if not passed (backwards compatibility or direct call)
+            const departureTime = depTime || (flightId === 'ST001' ? '06:45' : (flightId === 'ST002' ? '10:15' : '18:30'));
+            const arrivalTime = arrTime || (flightId === 'ST001' ? '07:50' : (flightId === 'ST002' ? '11:25' : '19:45'));
+
+            const selectedFlight = {
+                ...searchData,
+                flightId: flightId,
+                flightNumber: flightNumber,
+                price: price,
+                airline: airline,
+                totalPrice: price * travellers,
+                departureTime: departureTime,
+                arrivalTime: arrivalTime,
+                // Ensure origin/dest are preserved from search data
+                from: searchData.from || 'MAA',
+                to: searchData.to || 'CJB'
+            };
+
+            console.log('Flight Selected:', selectedFlight);
+            localStorage.setItem('selectedFlight', JSON.stringify(selectedFlight));
+
+            // Proceed to Passenger Details
+            window.location.href = 'web3.html';
         }
     </script>
-
 </body>
+
 </html>

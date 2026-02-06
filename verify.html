@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Booking - Flight Management System</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/index.css">
+
+    <style>
+        .verify-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--spacing-lg);
+            background: var(--background);
+        }
+
+        .verify-card {
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .verify-header {
+            text-align: center;
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .verify-icon {
+            font-size: 4rem;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .verify-title {
+            font-size: 2rem;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .verify-subtitle {
+            color: var(--text-secondary);
+        }
+
+        .verification-result {
+            display: none;
+            padding: var(--spacing-2xl);
+            border-radius: var(--radius-lg);
+            margin-top: var(--spacing-xl);
+            text-align: center;
+        }
+
+        .verification-result.success {
+            display: block;
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            border: 2px solid var(--success);
+        }
+
+        .verification-result.failed {
+            display: block;
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            border: 2px solid var(--error);
+        }
+
+        .result-icon {
+            font-size: 4rem;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .result-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .result-message {
+            font-size: 1rem;
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .booking-info {
+            background: white;
+            padding: var(--spacing-lg);
+            border-radius: var(--radius-md);
+            margin-top: var(--spacing-lg);
+            text-align: left;
+        }
+
+        [data-theme="dark"] .booking-info {
+            background: var(--surface-elevated);
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: var(--spacing-sm) 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .info-value {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .signature-details {
+            background: var(--surface);
+            padding: var(--spacing-md);
+            border-radius: var(--radius-md);
+            margin-top: var(--spacing-md);
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            word-break: break-all;
+            color: var(--text-secondary);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Theme Toggle -->
+    <button id="theme-toggle" class="theme-toggle">🌙</button>
+
+    <div class="verify-container">
+        <div class="card card-elevated verify-card">
+            <div class="verify-header">
+                <div class="verify-icon">🔍</div>
+                <h1 class="verify-title">Verify Booking Authenticity</h1>
+                <p class="verify-subtitle">
+                    Enter a booking ID to verify its digital signature and authenticity
+                </p>
+            </div>
+
+            <div id="error-message"></div>
+
+            <form id="verify-form">
+                <div class="form-group">
+                    <label class="form-label" for="booking-id">Booking ID</label>
+                    <input type="text" id="booking-id" class="form-input" placeholder="FB1738419176123" required>
+                    <p class="form-hint">
+                        The booking ID can be found in your confirmation email or booking details
+                    </p>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                    <span>🔐</span>
+                    <span>Verify Digital Signature</span>
+                </button>
+            </form>
+
+            <!-- Success Result -->
+            <div id="success-result" class="verification-result success">
+                <div class="result-icon">✅</div>
+                <div class="result-title" style="color: #065f46;">Booking Verified!</div>
+                <div class="result-message" style="color: #047857;">
+                    This booking is authentic and has not been tampered with.
+                    The digital signature is valid.
+                </div>
+
+                <div class="booking-info" id="booking-details"></div>
+
+                <div class="signature-details">
+                    <strong>Digital Signature Algorithm:</strong> RSA-SHA256<br>
+                    <strong>Verification Status:</strong> <span style="color: var(--success);">✓ Valid</span><br>
+                    <strong>Encryption:</strong> AES-256-CBC for sensitive data<br>
+                    <strong>Hash Function:</strong> SHA-256
+                </div>
+            </div>
+
+            <!-- Failed Result -->
+            <div id="failed-result" class="verification-result failed">
+                <div class="result-icon">❌</div>
+                <div class="result-title" style="color: #991b1b;">Verification Failed</div>
+                <div class="result-message" style="color: #b91c1c;">
+                    This booking could not be verified. The digital signature is invalid
+                    or the booking data has been tampered with.
+                </div>
+
+                <div class="alert alert-warning">
+                    <span>⚠️</span>
+                    <div>
+                        <strong>Security Warning:</strong><br>
+                        Do not trust this booking. It may be fraudulent or the data may have been modified.
+                    </div>
+                </div>
+
+                <button class="btn btn-secondary mt-lg" onclick="resetVerification()">
+                    Try Another Booking
+                </button>
+            </div>
+
+            <!-- Info Section -->
+            <div class="card" style="margin-top: var(--spacing-2xl); background: var(--surface);">
+                <h3 style="margin-bottom: var(--spacing-md);">🛡️ How Verification Works</h3>
+                <div style="color: var(--text-secondary); font-size: 0.875rem; line-height: 1.6;">
+                    <p><strong>1. Digital Signature Creation:</strong> When a booking is created, a unique digital
+                        signature is generated using RSA-SHA256 algorithm.</p>
+                    <p><strong>2. Data Integrity:</strong> The signature is created from a hash of the booking data,
+                        ensuring any modification can be detected.</p>
+                    <p><strong>3. Verification Process:</strong> The system recalculates the hash and compares it with
+                        the stored signature to verify authenticity.</p>
+                    <p><strong>4. Security Guarantee:</strong> A valid signature proves the booking is genuine and
+                        hasn't been altered since creation.</p>
+                </div>
+            </div>
+
+            <div class="text-center mt-lg">
+                <a href="web.html" class="btn btn-secondary">← Back to Search</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script>
+        const verifyForm = document.getElementById('verify-form');
+        const successResult = document.getElementById('success-result');
+        const failedResult = document.getElementById('failed-result');
+
+        verifyForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const bookingId = document.getElementById('booking-id').value.trim();
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+
+            // Hide previous results
+            successResult.style.display = 'none';
+            failedResult.style.display = 'none';
+            document.getElementById('error-message').innerHTML = '';
+
+            try {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<div class="spinner spinner-sm"></div> <span>Verifying...</span>';
+
+                const response = await api.verifyBookingSignature(bookingId);
+
+                if (response.success && response.verified) {
+                    // Show success result
+                    const details = response.bookingDetails;
+                    document.getElementById('booking-details').innerHTML = `
+                        <div class="info-row">
+                            <span class="info-label">Booking ID:</span>
+                            <span class="info-value">${details.bookingId}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Flight Number:</span>
+                            <span class="info-value">${details.flightNumber}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Route:</span>
+                            <span class="info-value">${details.from} → ${details.to}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Status:</span>
+                            <span class="info-value">
+                                <span class="badge badge-${details.status === 'confirmed' ? 'success' : 'primary'}">
+                                    ${details.status}
+                                </span>
+                            </span>
+                        </div>
+                    `;
+                    successResult.style.display = 'block';
+                    verifyForm.style.display = 'none';
+                } else {
+                    // Show failed result
+                    failedResult.style.display = 'block';
+                    verifyForm.style.display = 'none';
+                }
+            } catch (error) {
+                showError(error.message || 'Verification failed. Please check the booking ID and try again.');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<span>🔐</span><span>Verify Digital Signature</span>';
+            }
+        });
+
+        function resetVerification() {
+            successResult.style.display = 'none';
+            failedResult.style.display = 'none';
+            verifyForm.style.display = 'block';
+            document.getElementById('booking-id').value = '';
+        }
+    </script>
+</body>
+
+</html>

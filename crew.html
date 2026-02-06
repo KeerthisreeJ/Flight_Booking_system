@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crew Portal - Flight Booking System</title>
+    <link rel="stylesheet" href="css/crew.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Georgia&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="ri-flight-takeoff-line"></i>
+                <span>Crew Portal</span>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="#" class="nav-item active" data-section="dashboard">
+                <i class="ri-dashboard-line"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="#" class="nav-item" data-section="flights">
+                <i class="ri-plane-line"></i>
+                <span>My Flights</span>
+            </a>
+            <a href="#" class="nav-item" data-section="schedule">
+                <i class="ri-calendar-line"></i>
+                <span>Schedule</span>
+            </a>
+            <a href="#" class="nav-item" data-section="profile">
+                <i class="ri-user-line"></i>
+                <span>Profile</span>
+            </a>
+            <a href="#" class="nav-item" data-section="team">
+                <i class="ri-team-line"></i>
+                <span>Team Management</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="crew-info">
+                <div class="crew-avatar">
+                    <i class="ri-user-fill"></i>
+                </div>
+                <div class="crew-details">
+                    <div class="crew-name" id="crewName">Loading...</div>
+                    <div class="crew-role" id="crewRole">Crew Member</div>
+                </div>
+            </div>
+            <button class="logout-btn" id="crewLogout">
+                <i class="ri-logout-box-line"></i>
+                <span>Logout</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Header -->
+        <header class="header">
+            <button class="menu-toggle" id="menuToggle">
+                <i class="ri-menu-line"></i>
+            </button>
+            <h1 class="page-title">Dashboard</h1>
+            <div class="header-actions">
+                <div class="employee-id" id="employeeId">ID: Loading...</div>
+            </div>
+        </header>
+
+        <!-- Dashboard Section -->
+        <section class="content-section active" id="dashboard-section">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="ri-plane-line"></i>
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="totalFlights">0</div>
+                        <div class="stat-label">Assigned Flights</div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="ri-time-line"></i>
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="upcomingFlights">0</div>
+                        <div class="stat-label">Upcoming</div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="ri-check-line"></i>
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="completedFlights">0</div>
+                        <div class="stat-label">Completed</div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="ri-trophy-line"></i>
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="totalHours">0</div>
+                        <div class="stat-label">Flight Hours</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-content">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Upcoming Flights</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="flights-list" id="upcomingFlightsList">
+                            <div class="loading">Loading flights...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- My Flights Section -->
+        <section class="content-section" id="flights-section">
+            <div class="section-header">
+                <h2>My Assigned Flights</h2>
+                <div class="filters">
+                    <select id="flightStatusFilter" class="filter-select">
+                        <option value="">All Status</option>
+                        <option value="active">Active</option>
+                        <option value="completed">Completed</option>
+                        <option value="cancelled">Cancelled</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-container">
+                        <table class="data-table" id="flightsTable">
+                            <thead>
+                                <tr>
+                                    <th>Flight Number</th>
+                                    <th>Route</th>
+                                    <th>Departure</th>
+                                    <th>Arrival</th>
+                                    <th>Aircraft</th>
+                                    <th>My Role</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="loading-row">
+                                    <td colspan="8">Loading flights...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Schedule Section -->
+        <section class="content-section" id="schedule-section">
+            <div class="section-header">
+                <h2>Flight Schedule</h2>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="schedule-calendar" id="scheduleCalendar">
+                        <div class="loading">Loading schedule...</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Profile Section -->
+        <section class="content-section" id="profile-section">
+            <div class="section-header">
+                <h2>My Profile</h2>
+            </div>
+
+            <div class="profile-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Personal Information</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="profile-info" id="profileInfo">
+                            <div class="loading">Loading profile...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Professional Details</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="profile-info" id="professionalInfo">
+                            <div class="loading">Loading details...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Team Section -->
+        <section class="content-section" id="team-section">
+            <div class="section-header">
+                <h2>Team Management</h2>
+                <button class="btn btn-primary" id="addCrewBtn">
+                    <i class="ri-user-add-line"></i> Add Crew Member
+                </button>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-container">
+                        <table class="data-table" id="teamTable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Role</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="loading-row">
+                                    <td colspan="5">Loading team members...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Flight Details Modal -->
+    <div class="modal" id="flightDetailsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Flight Details</h2>
+                <button class="close-modal" data-modal="flightDetailsModal">
+                    <i class="ri-close-line"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="flightDetailsContent">
+                <div class="loading">Loading details...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Crew Modal -->
+    <div class="modal" id="crewModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="crewModalTitle">Add Crew Member</h2>
+                <button class="close-modal" data-modal="crewModal">
+                    <i class="ri-close-line"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="crewForm">
+                    <input type="hidden" id="crewId">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>First Name</label>
+                            <input type="text" id="crewFirstName" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Last Name</label>
+                            <input type="text" id="crewLastName" class="form-input" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="crewEmail" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone</label>
+                        <input type="tel" id="crewPhone" class="form-input" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Role</label>
+                            <select id="crewRole" class="form-select" required>
+                                <option value="pilot">Pilot</option>
+                                <option value="co-pilot">Co-Pilot</option>
+                                <option value="senior-cabin-crew">Senior Cabin Crew</option>
+                                <option value="cabin-crew">Cabin Crew</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Status</label>
+                            <select id="crewStatus" class="form-select" required>
+                                <option value="active">Active</option>
+                                <option value="on-leave">On Leave</option>
+                                <option value="inactive">Inactive</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Experience (Years)</label>
+                            <input type="number" id="crewExperience" class="form-input" min="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Nationality</label>
+                            <input type="text" id="crewNationality" class="form-input" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Date of Birth</label>
+                        <input type="date" id="crewDOB" class="form-input" required>
+                    </div>
+                    <div class="form-group" id="licenseGroup" style="display: none;">
+                        <label>License Number</label>
+                        <input type="text" id="crewLicense" class="form-input">
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary close-modal"
+                            data-modal="crewModal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save Member</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/crew.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flight Management System - Welcome</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600&family=Playfair+Display:ital@0;1&display=swap"
+        rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/index.css">
+
+    <style>
+        :root {
+            --brand-teal: #06b6d4;
+            --brand-blue: #3b82f6;
+            --brand-dark: #0f172a;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .hero-section {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0cbaba 0%, #380036 100%);
+            /* Botanical gradient feel */
+            background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('https://images.unsplash.com/photo-1542296332-2e44a7343971?q=80&w=2000&auto=format&fit=crop');
+            /* Fallback / Overlay */
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            position: relative;
+            color: white;
+            padding: 20px;
+        }
+
+        /* Overlay gradient to match 'botanme' aesthetic (teal/blue) */
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(45deg, rgba(6, 182, 212, 0.85), rgba(59, 130, 246, 0.85));
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .brand-box {
+            border: 3px solid rgba(255, 255, 255, 0.8);
+            padding: 40px 60px;
+            display: inline-block;
+            margin-bottom: 60px;
+            backdrop-filter: blur(5px);
+            /* Subtle glass effect */
+            transition: transform 0.3s ease;
+        }
+
+        .brand-box:hover {
+            transform: scale(1.02);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .brand-title {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 200;
+            font-size: 3.5rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin: 0;
+            color: white;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 40px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .hero-btn {
+            border: 2px solid white;
+            background: transparent;
+            color: white;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 250px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .hero-btn:hover {
+            background: white;
+            color: var(--brand-teal);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .tagline-section {
+            background: #f9fafb;
+            padding: 60px 20px;
+            text-align: center;
+            color: #4b5563;
+        }
+
+        .tagline-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-style: italic;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        .reviews-section {
+            padding: 80px 20px;
+            background: white;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 300;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--brand-dark);
+            margin-bottom: 15px;
+        }
+
+        .review-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .review-card {
+            background: #f9fafb;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            transition: transform 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .review-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .review-text {
+            font-style: italic;
+            color: #6b7280;
+            margin-bottom: 20px;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+        }
+
+        .review-author {
+            font-weight: 600;
+            color: var(--brand-teal);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+        }
+
+        .stars {
+            color: #fbbf24;
+            margin-bottom: 15px;
+        }
+
+        .footer-section {
+            background: #e5e7eb;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .footer-title {
+            font-size: 1.5rem;
+            font-weight: 300;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 30px;
+            color: var(--brand-dark);
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .social-icon {
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #9ca3af;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .social-icon:hover {
+            background: var(--brand-teal);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .footer-links {
+            font-size: 0.9rem;
+            color: #6b7280;
+        }
+
+        .footer-links a {
+            color: #6b7280;
+            text-decoration: none;
+            margin: 0 10px;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: var(--brand-dark);
+        }
+
+        .newsletter-form {
+            max-width: 400px;
+            margin: 0 auto 30px;
+            display: flex;
+            gap: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .brand-title {
+                font-size: 2rem;
+            }
+
+            .brand-box {
+                padding: 20px 30px;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <div class="hero-overlay"></div>
+
+        <div class="hero-content">
+            <div class="brand-box">
+                <h1 class="brand-title">Flight Management<br>System</h1>
+            </div>
+
+            <div class="hero-buttons">
+                <a href="login.html" class="hero-btn">Book a Flight</a>
+                <a href="login.html" class="hero-btn">Staff Login</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tagline Section -->
+    <div class="tagline-section">
+        <p class="tagline-text">
+            "Experience the skies like never before. Seamless booking, secure transactions, and premium service tailored
+            just for you."
+        </p>
+    </div>
+
+    <!-- Reviews Section -->
+    <div class="reviews-section">
+        <div class="section-header">
+            <h2 class="section-title">What Our Users Say</h2>
+            <div style="width: 50px; height: 2px; background: #06b6d4; margin: 0 auto;"></div>
+        </div>
+
+        <div class="review-grid">
+            <div class="review-card">
+                <div class="stars">
+                    <i class="ri-star-fill"></i>
+                    <i class="ri-star-fill"></i>
+                    <i class="ri-star-fill"></i>
+                    <i class="ri-star-fill"></i>
+                    <i class="ri-star-fill"></i>
+                </div>
+                <p class="review-text">"The most seamless booking experience I've ever had. The UI is stunning and the
+                    process is secure."</p>
+                <div class="review-author">Sarah Johnson</div>
+                <div style="font-size: 0.8rem; color: #9ca3af; margin-top: 5px;">Frequent Flyer</div>
+            </div>
+
+            <div class="review-card">
+                <div class="stars">
+                    <i class="ri-star-fill"></i>
+                    <i class="ri-star-fill"></i>
+                    <i class="ri-star-fill"></i>
+                    <i class="ri-star-fill"></i>
+                    <i class="ri-star-half-fill"></i>
+                </div>
+                <p class="review-text">"I love the digital signature verification. Finally, I can trust that my booking
+                    is secure and authentic."</p>
+                <div class="review-author">Michael Chen</div>
+                <div style="font-size: 0.8rem; color: #9ca3af; margin-top: 5px;">Business Traveler</div>
+            </div>
+
+            <div class="review-card">
+                <div class="stars">
+                    <i class="ri-star-fill"></i>
+                    <i class="ri-star-fill"></i>
+                    <i class="ri-star-fill"></i>
+                    <i class="ri-star-fill"></i>
+                    <i class="ri-star-fill"></i>
+                </div>
+                <p class="review-text">"Excellent crew management portal. Makes my job as a senior cabin crew member so
+                    much easier."</p>
+                <div class="review-author">Elena Rodriguez</div>
+                <div style="font-size: 0.8rem; color: #9ca3af; margin-top: 5px;">Senior Cabin Crew</div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 40px;">
+            <button class="btn btn-secondary" onclick="alert('Feature coming soon!')"
+                style="border-radius: 50px; padding: 10px 30px;">
+                <i class="ri-pencil-line"></i> Add Your Review
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer Section -->
+    <div class="footer-section">
+        <h3 class="footer-title">Follow Us</h3>
+
+        <div class="social-icons">
+            <a href="#" class="social-icon"><i class="ri-facebook-fill"></i></a>
+            <a href="#" class="social-icon"><i class="ri-twitter-x-fill"></i></a>
+            <a href="#" class="social-icon"><i class="ri-instagram-fill"></i></a>
+            <a href="#" class="social-icon"><i class="ri-linkedin-fill"></i></a>
+            <a href="#" class="social-icon"><i class="ri-pinterest-fill"></i></a>
+        </div>
+
+        <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Subscribed!')">
+            <input type="email" placeholder="Your email"
+                style="flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
+            <button class="btn btn-primary" style="border-radius: 4px;">Subscribe</button>
+        </form>
+
+        <div class="footer-links">
+            <a href="#">Home</a> |
+            <a href="#">About Us</a> |
+            <a href="#">Contact</a> |
+            <a href="#">Privacy Policy</a>
+        </div>
+
+        <div style="margin-top: 20px; font-size: 0.8rem; color: #9ca3af;">
+            Copyright &copy; 2026 Flight Management System. All rights reserved.
+        </div>
+    </div>
+
+</body>
+
+</html>

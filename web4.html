@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flight Order Book</title>
-    
+
     <style>
-        
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
         }
-        
+
         header {
             background-color: #333;
             color: white;
@@ -20,7 +20,7 @@
             text-align: center;
             opacity: 0.5;
         }
-        
+
         main {
             padding: 20px;
             background-color: powderblue;
@@ -30,16 +30,16 @@
         .menu-item {
             background-color: rgba(255, 255, 255, 0.9);
         }
-        
+
         .menu-section {
             margin-bottom: 30px;
         }
-        
+
         h2 {
             margin-bottom: 10px;
             font-weight: bold;
         }
-        
+
         .menu-item {
             border: 1px solid #ccc;
             border-radius: 5px;
@@ -48,7 +48,7 @@
             background-color: #f9f9f9;
             transition: transform 0.3s ease;
         }
-        
+
         .menu-item:hover {
             transform: scale(1.02);
         }
@@ -76,13 +76,16 @@
         }
     </style>
 </head>
+
 <body>
     <header>
         <h1>Flight Order Book</h1>
         <h4>When checked Out the payment will directly be added to overall payment </h4>
     </header>
     <main>
-        <button style="background-color: rgb(183, 183, 217); color: #f9f9f9;"><a href="web3.html"><h2><b>Go back</b></h2></a></button>
+        <button style="background-color: rgb(183, 183, 217); color: #f9f9f9;"><a href="web3.html">
+                <h2><b>Go back</b></h2>
+            </a></button>
         <section class="menu-section" id="Snack-section">
             <h1>Classics</h1>
             <div class="menu-item" id="Veg-Noodles">
@@ -163,7 +166,7 @@
                 <p>₹110</p>
             </div>
         </section>
-        
+
         <section class="menu-section" id="lunch-dinner-section">
             <h1 style="background-color: #f9f9f9; opacity: 0.8;">South Indian Lunch and Dinner</h1>
             <div class="menu-item" id="tamarind-rice">
@@ -175,113 +178,121 @@
 
         <section id="checkout-section">
             <h2>Total Cost: <span id="checkout-total">₹0</span></h2>
-            
-            <button id="checkout-button"><a href="web04.html">Checkout</a></button>
+
+            <button id="checkout-button">Checkout</button>
 
         </section>
     </main>
     <footer>
         <p>&copy; 2024 Flight Booking. All rights reserved.</p>
         <p>The Breakfast and the Lunch/Dinner item are only Available on Selected Flights</p>
-  
 
-    <script>
-        var totalCost = 0;
 
-        
-        function handleItemClick(itemName, itemPrice) {
-            
-            var existingCheckoutBar = document.querySelector("#" + itemName + " .checkout-bar");
-            if (existingCheckoutBar) {
-                return; 
+        <script>
+            var totalCost = 0;
+
+
+            function handleItemClick(itemName, itemPrice) {
+
+                var existingCheckoutBar = document.querySelector("#" + itemName + " .checkout-bar");
+                if (existingCheckoutBar) {
+                    return;
+                }
+
+
+                var checkoutBar = document.createElement("div");
+                checkoutBar.classList.add("checkout-bar");
+
+                var quantityInput = document.createElement("input");
+                quantityInput.setAttribute("type", "number");
+                quantityInput.setAttribute("placeholder", "Quantity");
+                quantityInput.setAttribute("min", "0");
+                quantityInput.setAttribute("value", "0");
+
+                var totalPrice = document.createElement("p");
+                totalPrice.textContent = " ";
+
+                checkoutBar.appendChild(quantityInput);
+                checkoutBar.appendChild(totalPrice);
+
+
+                var itemElement = document.getElementById(itemName);
+                itemElement.appendChild(checkoutBar);
+
+
+                quantityInput.addEventListener("input", function () {
+                    updateTotal(itemPrice, this.value);
+                });
             }
-    
-            
-            var checkoutBar = document.createElement("div");
-            checkoutBar.classList.add("checkout-bar");
-    
-            var quantityInput = document.createElement("input");
-            quantityInput.setAttribute("type", "number");
-            quantityInput.setAttribute("placeholder", "Quantity");
-            quantityInput.setAttribute("min", "0");
-            quantityInput.setAttribute("value", "0");
-    
-            var totalPrice = document.createElement("p");
-            totalPrice.textContent = " ";
-    
-            checkoutBar.appendChild(quantityInput);
-            checkoutBar.appendChild(totalPrice);
-    
-           
-            var itemElement = document.getElementById(itemName);
-            itemElement.appendChild(checkoutBar);
-    
-           
-            quantityInput.addEventListener("input", function() {
-                updateTotal(itemPrice, this.value);
+
+
+            function updateTotal(itemPrice, quantity) {
+                var total = Number(itemPrice) * Number(quantity);
+                totalCost += total;
+                document.getElementById("checkout-total").textContent = "₹" + totalCost;
+            }
+
+            document.getElementById("Veg-Noodles").addEventListener("click", function () {
+                handleItemClick("Veg-Noodles", 400);
             });
-        }
-    
-        
-        function updateTotal(itemPrice, quantity) {
-            var total = Number(itemPrice) * Number(quantity);
-            totalCost += total;
-            document.getElementById("checkout-total").textContent = "₹" + totalCost;
-        }
-    
-        document.getElementById("Veg-Noodles").addEventListener("click", function() {
-            handleItemClick("Veg-Noodles", 400);
-        });
-        document.getElementById("Chicken-Noodles").addEventListener("click", function() {
-            handleItemClick("Chicken-Noodles", 400);
-        });
-        document.getElementById("Cucumber-Tomato-Cheese-Sandwich").addEventListener("click", function() {
-            handleItemClick("Cucumber-Tomato-Cheese-Sandwich", 400);
-        });
-        document.getElementById("Chicken-Junglee-Sandwich").addEventListener("click", function() {
-            handleItemClick("Chicken-Junglee-Sandwich", 400);
-        });
-        document.getElementById("Aerated-Soft-Drink").addEventListener("click", function() {
-            handleItemClick("Aerated-Soft-Drink", 200);
-        });
-        document.getElementById("Coke-Zero-Sugar").addEventListener("click", function() {
-            handleItemClick("Coke-Zero-Sugar", 200);
-        });
-        document.getElementById("Masala-Tea").addEventListener("click", function() {
-            handleItemClick("Masala-Tea", 200);
-        });
-        document.getElementById("Cappuccino").addEventListener("click", function() {
-            handleItemClick("Cappuccino", 200);
-        });
-        document.getElementById("Black-Tea-Darjeeling").addEventListener("click", function() {
-            handleItemClick("Black-Tea-Darjeeling", 200);
-        });
-        document.getElementById("Black-Coffee-No-Sugar").addEventListener("click", function() {
-            handleItemClick("Black-Coffee-No-Sugar", 200);
-        });
-        document.getElementById("idli").addEventListener("click", function() {
-            handleItemClick("idli", 100);
-        });
-        document.getElementById("dosa").addEventListener("click", function() {
-            handleItemClick("dosa", 120);
-        });
-        document.getElementById("wada").addEventListener("click", function() {
-            handleItemClick("wada", 110);
-        });
-        document.getElementById("Pongal").addEventListener("click", function() {
-            handleItemClick("Pongal", 120);
-        });
-    
-        document.getElementById("tamarind-rice").addEventListener("click", function() {
-            handleItemClick("tamarind-rice", 200);
-        });
+            document.getElementById("Chicken-Noodles").addEventListener("click", function () {
+                handleItemClick("Chicken-Noodles", 400);
+            });
+            document.getElementById("Cucumber-Tomato-Cheese-Sandwich").addEventListener("click", function () {
+                handleItemClick("Cucumber-Tomato-Cheese-Sandwich", 400);
+            });
+            document.getElementById("Chicken-Junglee-Sandwich").addEventListener("click", function () {
+                handleItemClick("Chicken-Junglee-Sandwich", 400);
+            });
+            document.getElementById("Aerated-Soft-Drink").addEventListener("click", function () {
+                handleItemClick("Aerated-Soft-Drink", 200);
+            });
+            document.getElementById("Coke-Zero-Sugar").addEventListener("click", function () {
+                handleItemClick("Coke-Zero-Sugar", 200);
+            });
+            document.getElementById("Masala-Tea").addEventListener("click", function () {
+                handleItemClick("Masala-Tea", 200);
+            });
+            document.getElementById("Cappuccino").addEventListener("click", function () {
+                handleItemClick("Cappuccino", 200);
+            });
+            document.getElementById("Black-Tea-Darjeeling").addEventListener("click", function () {
+                handleItemClick("Black-Tea-Darjeeling", 200);
+            });
+            document.getElementById("Black-Coffee-No-Sugar").addEventListener("click", function () {
+                handleItemClick("Black-Coffee-No-Sugar", 200);
+            });
+            document.getElementById("idli").addEventListener("click", function () {
+                handleItemClick("idli", 100);
+            });
+            document.getElementById("dosa").addEventListener("click", function () {
+                handleItemClick("dosa", 120);
+            });
+            document.getElementById("wada").addEventListener("click", function () {
+                handleItemClick("wada", 110);
+            });
+            document.getElementById("Pongal").addEventListener("click", function () {
+                handleItemClick("Pongal", 120);
+            });
+
+            document.getElementById("tamarind-rice").addEventListener("click", function () {
+                handleItemClick("tamarind-rice", 200);
+            });
 
 
-        
-        document.getElementById("checkout-button").addEventListener("click", function() {
-            
-            alert("Total cost: ₹" + totalCost);
-        });
-    </script>
+
+            document.getElementById("checkout-button").addEventListener("click", function () {
+                // Save food selection to localStorage
+                const foodData = {
+                    totalCost: totalCost,
+                    items: [] // Could populate with actual items if needed, for now total is enough
+                };
+                localStorage.setItem('foodData', JSON.stringify(foodData));
+
+                // Proceed to Seat Selection
+                window.location.href = 'web04.html';
+            });
+        </script>
 </body>
+
 </html>

@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Secure Flight Management System with Multi-Factor Authentication">
+    <title>Flight Management System - Secure Login</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="css/index.css">
+    
+    <style>
+        .auth-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--spacing-lg);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .auth-background {
+            position: absolute;
+            inset: 0;
+            background: 
+                radial-gradient(at 20% 30%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
+                radial-gradient(at 80% 70%, rgba(6, 182, 212, 0.15) 0px, transparent 50%),
+                radial-gradient(at 50% 50%, rgba(99, 102, 241, 0.1) 0px, transparent 50%);
+            z-index: -1;
+        }
+        
+        .auth-card {
+            max-width: 480px;
+            width: 100%;
+        }
+        
+        .auth-header {
+            text-align: center;
+            margin-bottom: var(--spacing-2xl);
+        }
+        
+        .auth-logo {
+            font-size: 3rem;
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .auth-title {
+            font-size: 2rem;
+            background: linear-gradient(135deg, var(--primary-600), var(--accent-500));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: var(--spacing-sm);
+        }
+        
+        .auth-subtitle {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+        
+        .auth-tabs {
+            display: flex;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-xl);
+            background: var(--surface);
+            padding: var(--spacing-xs);
+            border-radius: var(--radius-lg);
+        }
+        
+        .auth-tab {
+            flex: 1;
+            padding: var(--spacing-md);
+            background: transparent;
+            border: none;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+        
+        .auth-tab.active {
+            background: linear-gradient(135deg, var(--primary-600), var(--primary-700));
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+        
+        .auth-form {
+            display: none;
+        }
+        
+        .auth-form.active {
+            display: block;
+            animation: fadeIn var(--transition-base);
+        }
+        
+        .password-strength {
+            height: 4px;
+            background: var(--border);
+            border-radius: var(--radius-full);
+            margin-top: var(--spacing-sm);
+            overflow: hidden;
+        }
+        
+        .password-strength-bar {
+            height: 100%;
+            width: 0%;
+            transition: all var(--transition-base);
+            border-radius: var(--radius-full);
+        }
+        
+        .strength-weak { width: 33%; background: var(--error); }
+        .strength-medium { width: 66%; background: var(--warning); }
+        .strength-strong { width: 100%; background: var(--success); }
+        
+        .security-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-sm) var(--spacing-md);
+            background: var(--primary-50);
+            border: 1px solid var(--primary-200);
+            border-radius: var(--radius-md);
+            font-size: 0.875rem;
+            color: var(--primary-700);
+            margin-top: var(--spacing-md);
+        }
+        
+        [data-theme="dark"] .security-badge {
+            background: var(--primary-900);
+            border-color: var(--primary-700);
+            color: var(--primary-300);
+        }
+        
+        .otp-container {
+            display: none;
+        }
+        
+        .otp-container.active {
+            display: block;
+            animation: slideUp var(--transition-base);
+        }
+        
+        .otp-inputs {
+            display: flex;
+            gap: var(--spacing-md);
+            justify-content: center;
+            margin: var(--spacing-xl) 0;
+        }
+        
+        .otp-input {
+            width: 56px;
+            height: 56px;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-md);
+            background: var(--surface);
+            color: var(--text-primary);
+            transition: all var(--transition-fast);
+        }
+        
+        .otp-input:focus {
+            outline: none;
+            border-color: var(--primary-500);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+        
+        .auth-footer {
+            text-align: center;
+            margin-top: var(--spacing-xl);
+            padding-top: var(--spacing-xl);
+            border-top: 1px solid var(--border);
+        }
+        
+        .security-features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-xl);
+        }
+        
+        .security-feature {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+        
+        .security-icon {
+            font-size: 1.25rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Theme Toggle -->
+    <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">🌙</button>
+    
+    <!-- Auth Container -->
+    <div class="auth-container">
+        <div class="auth-background"></div>
+        
+        <div class="card card-elevated auth-card">
+            <!-- Header -->
+            <div class="auth-header">
+                <div class="auth-logo">✈️</div>
+                <h1 class="auth-title">Flight Management System</h1>
+                <p class="auth-subtitle">Secure booking with multi-factor authentication</p>
+            </div>
+            
+            <!-- Tabs -->
+            <div class="auth-tabs">
+                <button class="auth-tab active" data-tab="login">Login</button>
+                <button class="auth-tab" data-tab="register">Register</button>
+            </div>
+            
+            <!-- Messages -->
+            <div id="error-message"></div>
+            <div id="success-message"></div>
+            
+            <!-- Login Form -->
+            <form id="login-form" class="auth-form active">
+                <div class="form-group">
+                    <label class="form-label" for="login-email">Email Address</label>
+                    <input 
+                        type="email" 
+                        id="login-email" 
+                        class="form-input" 
+                        placeholder="you@example.com"
+                        required
+                    >
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="login-password">Password</label>
+                    <input 
+                        type="password" 
+                        id="login-password" 
+                        class="form-input" 
+                        placeholder="Enter your password"
+                        required
+                    >
+                </div>
+                
+                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                    <span>Sign In</span>
+                    <span>→</span>
+                </button>
+                
+                <div class="security-badge">
+                    <span>🔒</span>
+                    <span>Protected by 2-Factor Authentication</span>
+                </div>
+            </form>
+            
+            <!-- Register Form -->
+            <form id="register-form" class="auth-form">
+                <div class="grid grid-2">
+                    <div class="form-group">
+                        <label class="form-label" for="reg-firstname">First Name</label>
+                        <input 
+                            type="text" 
+                            id="reg-firstname" 
+                            class="form-input" 
+                            placeholder="John"
+                            required
+                        >
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="reg-lastname">Last Name</label>
+                        <input 
+                            type="text" 
+                            id="reg-lastname" 
+                            class="form-input" 
+                            placeholder="Doe"
+                            required
+                        >
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="reg-email">Email Address</label>
+                    <input 
+                        type="email" 
+                        id="reg-email" 
+                        class="form-input" 
+                        placeholder="you@example.com"
+                        required
+                    >
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="reg-phone">Phone Number</label>
+                    <input 
+                        type="tel" 
+                        id="reg-phone" 
+                        class="form-input" 
+                        placeholder="+1 (555) 000-0000"
+                        required
+                    >
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="reg-password">Password</label>
+                    <input 
+                        type="password" 
+                        id="reg-password" 
+                        class="form-input" 
+                        placeholder="Min. 8 characters"
+                        required
+                    >
+                    <div class="password-strength">
+                        <div id="password-strength-bar" class="password-strength-bar"></div>
+                    </div>
+                    <p class="form-hint">Must contain uppercase, lowercase, and number</p>
+                </div>
+                
+                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                    <span>Create Account</span>
+                    <span>→</span>
+                </button>
+                
+                <div class="security-features">
+                    <div class="security-feature">
+                        <span class="security-icon">🔐</span>
+                        <span>AES-256 Encryption</span>
+                    </div>
+                    <div class="security-feature">
+                        <span class="security-icon">🛡️</span>
+                        <span>Digital Signatures</span>
+                    </div>
+                    <div class="security-feature">
+                        <span class="security-icon">🔑</span>
+                        <span>RSA Key Exchange</span>
+                    </div>
+                    <div class="security-feature">
+                        <span class="security-icon">📱</span>
+                        <span>2FA via Email</span>
+                    </div>
+                </div>
+            </form>
+            
+            <!-- OTP Verification (Hidden by default) -->
+            <div id="otp-container" class="otp-container">
+                <div class="text-center">
+                    <h3>Verify Your Identity</h3>
+                    <p class="text-secondary">Enter the 6-digit code sent to your email</p>
+                </div>
+                
+                <div class="otp-inputs">
+                    <input type="text" class="otp-input" maxlength="1" data-index="0">
+                    <input type="text" class="otp-input" maxlength="1" data-index="1">
+                    <input type="text" class="otp-input" maxlength="1" data-index="2">
+                    <input type="text" class="otp-input" maxlength="1" data-index="3">
+                    <input type="text" class="otp-input" maxlength="1" data-index="4">
+                    <input type="text" class="otp-input" maxlength="1" data-index="5">
+                </div>
+                
+                <button id="verify-otp-btn" class="btn btn-primary" style="width: 100%;">
+                    Verify & Continue
+                </button>
+                
+                <div class="text-center mt-md">
+                    <button id="resend-otp-btn" class="btn btn-secondary">
+                        Resend Code
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Footer -->
+            <div class="auth-footer">
+                <p class="text-secondary">
+                    <small>Secured with bcrypt hashing, JWT tokens, and multi-factor authentication</small>
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+</html>

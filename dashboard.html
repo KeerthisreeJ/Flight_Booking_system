@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Flight Management System</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/index.css">
+
+    <style>
+        .dashboard-container {
+            min-height: 100vh;
+            background: var(--background);
+        }
+
+        .dashboard-header {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: var(--spacing-lg) 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .dashboard-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .dashboard-brand {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+
+        .dashboard-logo {
+            font-size: 2rem;
+        }
+
+        .dashboard-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-600), var(--accent-500));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .dashboard-user {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-full);
+            background: linear-gradient(135deg, var(--primary-600), var(--accent-500));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+        }
+
+        .dashboard-main {
+            padding: var(--spacing-2xl) 0;
+        }
+
+        .welcome-section {
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .welcome-card {
+            background: linear-gradient(135deg, var(--primary-600), var(--primary-800));
+            color: white;
+            padding: var(--spacing-2xl);
+            border-radius: var(--radius-xl);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .welcome-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .welcome-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .welcome-title {
+            font-size: 2rem;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .welcome-subtitle {
+            opacity: 0.9;
+            font-size: 1.125rem;
+        }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .action-card {
+            background: var(--surface);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xl);
+            text-align: center;
+            transition: all var(--transition-base);
+            cursor: pointer;
+        }
+
+        .action-card:hover {
+            border-color: var(--primary-500);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .action-icon {
+            font-size: 3rem;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .action-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .action-description {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .bookings-section {
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .booking-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xl);
+            margin-bottom: var(--spacing-lg);
+            transition: all var(--transition-base);
+        }
+
+        .booking-card:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        .booking-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .booking-id {
+            font-weight: 700;
+            color: var(--primary-600);
+            font-size: 1.125rem;
+        }
+
+        .booking-route {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-md);
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .route-arrow {
+            color: var(--text-secondary);
+        }
+
+        .booking-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-xs);
+        }
+
+        .detail-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .detail-value {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .booking-actions {
+            display: flex;
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-lg);
+            padding-top: var(--spacing-lg);
+            border-top: 1px solid var(--border);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: var(--spacing-2xl);
+            color: var(--text-secondary);
+        }
+
+        .empty-icon {
+            font-size: 4rem;
+            margin-bottom: var(--spacing-md);
+            opacity: 0.5;
+        }
+
+        .qr-modal {
+            max-width: 400px;
+        }
+
+        .qr-code-display {
+            text-align: center;
+            padding: var(--spacing-xl);
+        }
+
+        .qr-code-display img {
+            max-width: 100%;
+            border-radius: var(--radius-md);
+        }
+
+        .admin-badge {
+            background: linear-gradient(135deg, var(--warning), #f97316);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Theme Toggle -->
+    <button id="theme-toggle" class="theme-toggle">🌙</button>
+
+    <div class="dashboard-container">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="container">
+                <nav class="dashboard-nav">
+                    <div class="dashboard-brand">
+                        <div class="dashboard-logo">✈️</div>
+                        <div>
+                            <div class="dashboard-title">Flight Management</div>
+                            <div class="text-secondary" style="font-size: 0.875rem;">Secure Booking System</div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-user">
+                        <div style="text-align: right;">
+                            <div id="user-name" class="font-semibold"></div>
+                            <div id="user-role" class="text-secondary" style="font-size: 0.875rem;"></div>
+                        </div>
+                        <div id="user-avatar" class="user-avatar"></div>
+                        <button id="logout-btn" class="btn btn-secondary btn-sm">Logout</button>
+                    </div>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <div class="container">
+                <!-- Welcome Section -->
+                <section class="welcome-section">
+                    <div class="welcome-card">
+                        <div class="welcome-content">
+                            <h1 class="welcome-title">Welcome back, <span id="welcome-name"></span>! 👋</h1>
+                            <p class="welcome-subtitle">Your account is secured with multi-factor authentication and
+                                end-to-end encryption</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Quick Actions -->
+                <section class="quick-actions">
+                    <div class="action-card" onclick="window.location.href='flights.html'">
+                        <div class="action-icon">🔍</div>
+                        <div class="action-title">Search Flights</div>
+                        <div class="action-description">Find and book your next flight</div>
+                    </div>
+
+                    <div class="action-card" onclick="window.location.href='bookings.html'">
+                        <div class="action-icon">📋</div>
+                        <div class="action-title">My Bookings</div>
+                        <div class="action-description">View and manage your bookings</div>
+                    </div>
+
+                    <div class="action-card" id="admin-action" style="display: none;"
+                        onclick="window.location.href='admin.html'">
+                        <div class="action-icon">⚙️</div>
+                        <div class="action-title">Admin Panel</div>
+                        <div class="action-description">Manage users and system</div>
+                    </div>
+
+                    <div class="action-card" onclick="window.location.href='verify.html'">
+                        <div class="action-icon">✅</div>
+                        <div class="action-title">Verify Booking</div>
+                        <div class="action-description">Check digital signature</div>
+                    </div>
+                </section>
+
+                <!-- Recent Bookings -->
+                <section class="bookings-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Recent Bookings</h2>
+                        <a href="bookings.html" class="btn btn-secondary btn-sm">View All</a>
+                    </div>
+
+                    <div id="bookings-container">
+                        <div class="text-center" style="padding: var(--spacing-2xl);">
+                            <div class="spinner"></div>
+                            <p class="mt-md text-secondary">Loading your bookings...</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Security Features -->
+                <section class="card">
+                    <h3 class="mb-md">🔐 Security Features Active</h3>
+                    <div class="grid grid-3">
+                        <div class="flex items-center gap-md">
+                            <span style="font-size: 1.5rem;">🔑</span>
+                            <div>
+                                <div class="font-semibold">AES-256 Encryption</div>
+                                <div class="text-secondary" style="font-size: 0.875rem;">Payment data encrypted</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-md">
+                            <span style="font-size: 1.5rem;">🛡️</span>
+                            <div>
+                                <div class="font-semibold">Digital Signatures</div>
+                                <div class="text-secondary" style="font-size: 0.875rem;">RSA-SHA256 verified</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-md">
+                            <span style="font-size: 1.5rem;">📱</span>
+                            <div>
+                                <div class="font-semibold">2FA Enabled</div>
+                                <div class="text-secondary" style="font-size: 0.875rem;">Email OTP protection</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- QR Code Modal -->
+    <div id="qr-modal" class="modal-overlay" style="display: none;">
+        <div class="modal qr-modal">
+            <h3 class="text-center mb-lg">Boarding Pass QR Code</h3>
+            <div id="qr-code-display" class="qr-code-display"></div>
+            <button class="btn btn-secondary" style="width: 100%;" onclick="closeQRModal()">Close</button>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+
+</html>

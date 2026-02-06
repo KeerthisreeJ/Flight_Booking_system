@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -76,21 +77,155 @@
         }
     </style>
 </head>
-<body style="background-image: url(https://static.vecteezy.com/system/resources/previews/003/781/534/non_2x/folding-paper-plane-flying-in-the-sky-with-clouds-seamless-pattern-a-small-white-plane-on-a-white-background-suitable-for-textiles-children-s-clothing-publications-wrapping-paper-free-vector.jpg);">
+
+<body
+    style="background-image: url(https://static.vecteezy.com/system/resources/previews/003/781/534/non_2x/folding-paper-plane-flying-in-the-sky-with-clouds-seamless-pattern-a-small-white-plane-on-a-white-background-suitable-for-textiles-children-s-clothing-publications-wrapping-paper-free-vector.jpg);">
     <div class="login-container">
         <h2>Login to your account</h2>
-        <form>
-            <input type="email" name="email" placeholder="Email" required>
+
+        <!-- Step 1: Login Form -->
+        <form id="loginForm">
+            <input type="email" id="email" name="email" placeholder="Email" required>
             <br>
-            
-            <input type="password" name="password" placeholder="Password" required>
-            <br>
-            <br>
-            <button type="submit"><a href="web.html">Login</a></button>
+            <input type="password" id="password" name="password" placeholder="Password" required>
+            <br><br>
+            <button type="submit">Login</button>
         </form>
+
+        <!-- Step 2: OTP Section (Hidden initially) -->
+        <div id="otpSection" style="display: none; margin-top: 20px;">
+            <h3>Enter OTP sent to your email</h3>
+            <input type="text" id="otp" placeholder="Enter 6-digit OTP" maxlength="6"
+                style="width: calc(100% - 16px); padding: 10px; margin-bottom: 10px;">
+            <br>
+            <button onclick="verifyOTP()" style="margin-right: 10px;">Verify OTP</button>
+            <button onclick="resendOTP()">Resend OTP</button>
+        </div>
+
+        <!-- Message Display -->
+        <div id="message" style="margin-top: 20px; text-align: center;"></div>
+
         <div class="signup-link">
             Don't have an account? <a href="web0.html">Sign Up</a>
         </div>
     </div>
+
+    <script>
+        const API_URL = 'http://localhost:5000/api';
+        let currentUserId = null;
+
+        // Login Form Submit
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            document.getElementById('message').innerHTML = '<p style="color: blue;">🔄 Logging in...</p>';
+
+            try {
+                const response = await fetch(`${API_URL}/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+                console.log('Login response:', data);
+
+                if (data.success) {
+                    currentUserId = data.userId;
+                    document.getElementById('loginForm').style.display = 'none';
+                    document.getElementById('otpSection').style.display = 'block';
+                    document.getElementById('message').innerHTML =
+                        '<p style="color: green;">✅ OTP sent to your email! Check your inbox.</p>';
+                } else {
+                    document.getElementById('message').innerHTML =
+                        `<p style="color: red;">❌ ${data.message}</p>`;
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                document.getElementById('message').innerHTML =
+                    '<p style="color: red;">❌ Cannot connect to server. Make sure backend is running on port 5000!</p>';
+            }
+        });
+
+        // Verify OTP
+        async function verifyOTP() {
+            const otp = document.getElementById('otp').value;
+
+            if (otp.length !== 6) {
+                alert('Please enter a 6-digit OTP');
+                return;
+            }
+
+            document.getElementById('message').innerHTML = '<p style="color: blue;">🔄 Verifying OTP...</p>';
+
+            try {
+                const response = await fetch(`${API_URL}/auth/verify-otp`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId: currentUserId, otp: otp })
+                });
+
+                const data = await response.json();
+                console.log('OTP response:', data);
+
+                if (data.success) {
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('user', JSON.stringify(data.user));
+
+                    document.getElementById('message').innerHTML =
+                        '<p style="color: green;">✅ Login successful! Redirecting...</p>';
+
+                    // Role-based routing
+                    setTimeout(() => {
+                        const userRole = data.user.role;
+
+                        switch (userRole) {
+                            case 'admin':
+                                window.location.href = 'admin.html';
+                                break;
+                            case 'crew':
+                                window.location.href = 'crew.html';
+                                break;
+                            case 'user':
+                            default:
+                                window.location.href = 'web.html';
+                                break;
+                        }
+                    }, 1000);
+                } else {
+                    document.getElementById('message').innerHTML =
+                        `<p style="color: red;">❌ ${data.message}</p>`;
+                }
+            } catch (error) {
+                console.error('OTP verification error:', error);
+                document.getElementById('message').innerHTML =
+                    '<p style="color: red;">❌ Error verifying OTP</p>';
+            }
+        }
+
+        // Resend OTP
+        async function resendOTP() {
+            document.getElementById('message').innerHTML = '<p style="color: blue;">🔄 Resending OTP...</p>';
+
+            try {
+                const response = await fetch(`${API_URL}/auth/resend-otp`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId: currentUserId })
+                });
+
+                const data = await response.json();
+                document.getElementById('message').innerHTML =
+                    `<p style="color: green;">${data.message}</p>`;
+            } catch (error) {
+                document.getElementById('message').innerHTML =
+                    '<p style="color: red;">❌ Error resending OTP</p>';
+            }
+        }
+    </script>
 </body>
+
 </html>
